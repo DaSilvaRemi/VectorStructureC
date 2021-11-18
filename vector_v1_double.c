@@ -154,3 +154,20 @@ int vector_v1_empty(p_s_vector_v1_double p_vector){
 size_t vector_v1_size(p_s_vector_v1_double p_vector){
     return p_vector->size;
 }
+
+void toString(p_s_vector_v1_double p_vector){
+    printf("p_vector{\n tab : [");
+
+    for(size_t i = 0; i < p_vector->size; i++){
+        printf("%f", p_vector->tab[i]);
+
+        if(i < p_vector->size - 1){
+            printf(", ");
+        }
+    }
+    printf("]\n");
+    printf("size : %lu\n", (unsigned long ) p_vector->size);
+    printf("max_size : %lu\n", (unsigned long ) p_vector->max_size;
+    printf("capacity : %lu\n", (unsigned long ) p_vector->capacity);
+    printf("};\n");
+}
