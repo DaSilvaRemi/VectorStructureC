@@ -24,5 +24,6 @@ void vector_v1_push_back(p_s_vector_v1_double p_vector);
 void vector_v1_pop_back(p_s_vector_v1_double p_vector);
 int vector_v1_clear(p_s_vector_v1_double p_vector);
 size_t vector_v1_empty(p_s_vector_v1_double p_vector);
+char* toString(p_s_vector_v1_double p_vector);
 
 #endif //_VECTOR_DOUBLE_H
