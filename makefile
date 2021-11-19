@@ -1,3 +1,5 @@
-vector_v1_double.c
-vector_v1_double.o
-test_vector_v1_double.o
+prog : 
+	gcc -o vector_v1_double.o
+
+vector_v1_double.o : vector_v1_double.c
+	gcc -c -Wall vector_v1_double.c
