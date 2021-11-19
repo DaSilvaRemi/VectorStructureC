@@ -3,6 +3,7 @@
 //
 #include <stdlib.h>
 #include <stdio.h>
+#include <stddef.h>
 #include "vector_v1_double.h"
 
 p_s_vector_v1_double vector_v1_double_alloc(size_t n)
@@ -11,7 +12,7 @@ p_s_vector_v1_double vector_v1_double_alloc(size_t n)
     size_t capacity = n + 10;
     size_t sizeOfTab = sizeof(double) * max_size;
 
-    p_s_vector_v1_double vector = (p_s_vector_v1_double)malloc(max_size);
+    p_s_vector_v1_double vector = (p_s_vector_v1_double) malloc(max_size);
 
     if (vector == NULL)
     {

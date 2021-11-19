@@ -5,6 +5,8 @@
 #ifndef _VECTOR_DOUBLE_H
 #define _VECTOR_DOUBLE_H
 
+#include <stddef.h>
+
 typedef struct s_vector_v1_double
 {
     double *tab;

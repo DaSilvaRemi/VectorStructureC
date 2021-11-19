@@ -255,7 +255,7 @@ int test_vector_v1_pop_back()
         result = vector_v1_double_get(vector, i);
         if (result != -1)
         {
-            printf("Error : expected %f but was %f \n", -1, result);
+            printf("Error : expected %d but was %f \n", -1, result);
             return -1;
         }
     }
@@ -315,47 +315,33 @@ int test_vector_v1_size(){
 
 int main(int argc, char *argv[])
 {
-    char *result = test_vector_v1_double_alloc() == 1 ? "Test Allocate passed" : "Test Allocate Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_double_alloc() == 1 ? "Test Allocate passed" : "Test Allocate Failed");
 
-    char *result = test_vector_v1_double_free() == 1 ? "Test Free passed" : "Test Free Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_double_free() == 1 ? "Test Free passed" : "Test Free Failed");
 
-    char *result = test_vector_v1_double_get() == 1 ? "Test Get passed" : "Test Free Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_double_get() == 1 ? "Test Get passed" : "Test Free Failed");
 
-    char *result = test_vector_v1_double_set() == 1 ? "Test Set passed" : "Test Free Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_double_set() == 1 ? "Test Set passed" : "Test Free Failed");
 
-    char *result = test_vector_v1_double_insert() == 1 ? "Test Insert passed" : "Test Insert Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_double_insert() == 1 ? "Test Insert passed" : "Test Insert Failed");
 
-    char *result = test_vector_v1_double_erase() == 1 ? "Test Erase passed" : "Test Erase Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_double_erase() == 1 ? "Test Erase passed" : "Test Erase Failed");
 
-    char *result = test_vector_v1_push_back() == 1 ? "Test Push Back passed" : "Test Push Back Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_push_back() == 1 ? "Test Push Back passed" : "Test Push Back Failed");
 
-    char *result = test_vector_v1_pop_back() == 1 ? "Test Pop Back passed" : "Test Pop Back Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_pop_back() == 1 ? "Test Pop Back passed" : "Test Pop Back Failed");
 
-    char *result = test_vector_v1_pop_back() == 1 ? "Test Pop Back passed" : "Test Pop Back Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_pop_back() == 1 ? "Test Pop Back passed" : "Test Pop Back Failed");
 
-    char *result = test_vector_v1_clear() == 1 ? "Test Clear passed" : "Test Clear Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_clear() == 1 ? "Test Clear passed" : "Test Clear Failed");
 
-    char *result = test_vector_v1_empty() == 1 ? "Test Empty passed" : "Test Empty Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_empty() == 1 ? "Test Empty passed" : "Test Empty Failed");
 
-    char *result = vector_v1_size() == 1 ? "Test Empty passed" : "Test Empty Failed";
-    printf("%s \n", result);
+    printf("%s \n", vector_v1_size() == 1 ? "Test Empty passed" : "Test Empty Failed");
 
-    char *result = test_vector_v1_empty() == 1 ? "Test Empty passed" : "Test Empty Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_empty() == 1 ? "Test Empty passed" : "Test Empty Failed");
 
-    char *result = test_vector_v1_size() == 1 ? "Test Size passed" : "Test Size Failed";
-    printf("%s \n", result);
+    printf("%s \n", test_vector_v1_size() == 1 ? "Test Size passed" : "Test Size Failed");
 
     return 0;
 }
