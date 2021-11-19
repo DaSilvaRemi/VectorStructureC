@@ -354,5 +354,8 @@ int main(int argc, char *argv[])
     char *result = test_vector_v1_empty() == 1 ? "Test Empty passed" : "Test Empty Failed";
     printf("%s \n", result);
 
+    char *result = test_vector_v1_size() == 1 ? "Test Size passed" : "Test Size Failed";
+    printf("%s \n", result);
+
     return 0;
 }
