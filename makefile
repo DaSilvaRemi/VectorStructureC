@@ -1,8 +1,13 @@
-prog : 
-	gcc -o vector_v1_double.o test_vector_v1_double
+all : test_vector
 
-vector_v1_double.o : vector_v1_double.c
-	gcc -c -Wall vector_v1_double.c
+test_vector : test_vector.o vector.o
+	gcc vector.o test_vector.o -g -o test_vector
 
-test_vector_v1_double.o : test_vector_v1_double.c
-	gcc -c -Wall test_vector_v1_double.c
+vector.o : vector.c vector.h
+	gcc -Wall -Wextra -g -c vector.c
+
+test_vector.o : test_vector.c
+	gcc -Wall -Wextra -g -c test_vector.c
+
+clean :
+	rm -f *.o prog
