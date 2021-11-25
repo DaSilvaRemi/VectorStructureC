@@ -5,11 +5,17 @@
 #include <stdlib.h>
 #include "vector.h"
 
+/**
+ * T.U. on vector_alloc
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_vector_alloc()
 {
     size_t expected_size = 0;
     p_s_vector vector = vector_alloc(expected_size);
 
+    //Test NULL values
     if(vector == NULL){
         printf("Error : vector was nos allocate ! \n");
         return -1;
@@ -22,6 +28,7 @@ int test_vector_alloc()
 
     int isPassed = 1;
 
+    //Test size 0
     size_t size = vector_size(vector);
     if (expected_size != size)
     {
@@ -33,6 +40,7 @@ int test_vector_alloc()
     vector_free(vector);
     vector = vector_alloc(expected_size);
 
+    //Test NULL values
     if(vector == NULL){
         printf("Error : vector was nos allocate ! \n");
         return -1;
@@ -43,6 +51,7 @@ int test_vector_alloc()
         return -1;
     }
 
+    //Test size 10
     size = vector_size(vector);
     if (expected_size != size)
     {
@@ -54,6 +63,13 @@ int test_vector_alloc()
     return isPassed;
 }
 
+/**
+ * T.U. on vector_get
+ *
+ * @remark One of the test display error, it's not a problem it's a normal behaviour
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_vector_get()
 {
     p_s_vector vector = vector_alloc(10);
@@ -61,20 +77,21 @@ int test_vector_get()
 
     double result = vector_get(vector, 10);
 
+    //Test get voer the size, display error
     if (result != -1)
     {
         isPassed = 0;
     }
 
+    //Test get size
     result = vector_get(vector, 1);
-
     if (result != 0.0)
     {
         isPassed = 0;
     }
 
+    //Test get value
     result = vector_get(vector, 9);
-
     if (result != 0.0)
     {
         isPassed = 0;
@@ -84,6 +101,13 @@ int test_vector_get()
     return isPassed;
 }
 
+/**
+ * T.U. on vector_set
+ *
+ * @remark One of the test display error, it's not a problem it's a normal behaviour
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_vector_set()
 {
     size_t i = 10;
@@ -92,6 +116,7 @@ int test_vector_set()
     p_s_vector vector = vector_alloc(i);
     double isPassed = 1;
 
+    //Test set 10.0 over tab, display error
     vector_set(vector, i, expected_result);
     double result = vector_get(vector, i);
     expected_result = -1;
@@ -102,6 +127,7 @@ int test_vector_set()
         isPassed = -1;
     }
 
+    //Test set to 4.5
     expected_result = 4.5;
     i = 2;
     vector_set(vector, i, expected_result);
@@ -113,6 +139,7 @@ int test_vector_set()
         isPassed = -1;
     }
 
+    //Test set to 7.5
     expected_result = 7.5;
     i = 9;
     vector_set(vector, i , expected_result);
@@ -128,6 +155,13 @@ int test_vector_set()
     return isPassed;
 }
 
+/**
+ * T.U. on vector_insert
+ *
+ * @remark One of the test display error, it's not a problem it's a normal behaviour
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_vector_insert()
 {
     int isPassed = 1;
@@ -183,7 +217,7 @@ int test_vector_insert()
         isPassed = -1;
     }
 
-    //Test insert other size limit
+    //Test insert over the size limit
     i = vector_size(vector) * 2;
     expected_size = vector_size(vector) + 1;
     vector_insert(vector, i, j);
@@ -199,6 +233,11 @@ int test_vector_insert()
     return isPassed;
 }
 
+/**
+ * T.U. on vector_erase
+ *
+ * @return 1 si réussi -1 sinon
+ */
 int test_vector_erase()
 {
     int isPassed = 1;
@@ -257,6 +296,12 @@ int test_vector_erase()
     return isPassed;
 }
 
+/**
+ * T.U. on vector_push_back
+ *
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_vector_push_back()
 {
     int isPassed = 1;
@@ -265,6 +310,7 @@ int test_vector_push_back()
     double j = 5.0;
     size_t expected_size = vector_size(vector) + 1;
 
+    //Test add after last element
     vector_push_back(vector, j);
     if (vector->size != expected_size)
     {
@@ -274,6 +320,7 @@ int test_vector_push_back()
 
     --expected_size;
 
+    //Test values
     result = vector_get(vector, expected_size);
     if (result != j)
     {
@@ -285,6 +332,13 @@ int test_vector_push_back()
     return isPassed;
 }
 
+/**
+ * T.U. on vector_pop_back
+ *
+ * @remark One of the test display error, it's not a problem it's a normal behaviour
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_vector_pop_back()
 {
     p_s_vector vector = vector_alloc(10);
@@ -295,17 +349,20 @@ int test_vector_pop_back()
     double result = 0.0;
     int isPassed = 1;
 
+    //Test erase last element
     vector_set(vector, i, j);
     vector_set(vector, --i, j);
     vector_pop_back(vector);
     size = vector_size(vector);
 
+    //Test size
     if (size != expected_size)
     {
         printf("Error : expected size %lu but was %lu \n", (unsigned long)expected_size, (unsigned long)size);
         isPassed = -1;
     }
 
+    //Test value other the limit to test size change
     result = vector_get(vector, i + 1);
     if (result != -1)
     {
@@ -313,6 +370,7 @@ int test_vector_pop_back()
         isPassed = -1;
     }
 
+    //Test value in the limit
     result = vector_get(vector, i);
     if (result != j)
     {
@@ -324,6 +382,11 @@ int test_vector_pop_back()
     return isPassed;
 }
 
+/**
+ * T.U. on vector_clear
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_vector_clear()
 {
     p_s_vector vector = vector_alloc(10);
@@ -344,6 +407,7 @@ int test_vector_clear()
         isPassed = -1;
     }
 
+    //Test to add after clear
     double result = 0.0;
     double expected = result;
     for(size_t i = 0; i < size; i++){
@@ -354,6 +418,7 @@ int test_vector_clear()
         }
     }
 
+    //Test get value after clear and insert
     expected = 10.0;
     vector_push_back(vector, expected);
     size_t expected_size = 1;
@@ -375,9 +440,13 @@ int test_vector_clear()
     return isPassed;
 }
 
+/**
+ * T.U. on vector_empty
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_vector_empty(){
     p_s_vector vector = vector_alloc(0);
-    int isPassed = 1;
     
     if(vector_empty(vector) != 1){
         return -1;
@@ -387,11 +456,16 @@ int test_vector_empty(){
     return 1;
 }
 
+/**
+ * T.U. on vector_size
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_vector_size(){
     p_s_vector vector = vector_alloc(0);
 
-    int result = vector_empty(vector);
-    int expected_result = 1;
+    int result = vector_size(vector);
+    int expected_result = 0;
     if(result != expected_result){
         printf("Error : expected %d but was %d \n", expected_result, result);
         return -1;
