@@ -60,9 +60,9 @@ void vector_free(p_s_vector p_vector)
  */
 double vector_get(p_s_vector p_vector, size_t i)
 {
-    if (i >= p_vector->size)
+    if (i >= vector_size(p_vector))
     {
-        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)p_vector->size);
+        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
         return -1;
     }
 
@@ -71,9 +71,9 @@ double vector_get(p_s_vector p_vector, size_t i)
 
 void vector_set(p_s_vector p_vector, size_t i, double v)
 {
-    if (i >= p_vector->size)
+    if (i >= vector_size(p_vector))
     {
-        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)p_vector->size);
+        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
         return;
     }
 
@@ -82,25 +82,27 @@ void vector_set(p_s_vector p_vector, size_t i, double v)
 
 void vector_insert(p_s_vector p_vector, size_t i, double v)
 {
-    p_vector->tab = realloc(p_vector->tab, sizeof(double) * (vector_size(p_vector) + 1));
+    if (i > vector_size(p_vector))
+    {
+        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
+        return;
+    }
+
+    ++p_vector->size;
+
+    p_vector->tab = realloc(p_vector->tab, sizeof(double) * vector_size(p_vector));
     if (p_vector->tab == NULL)
     {
         printf("Error to realloc p_vector->tab !");
         return;
     }
 
-    if (i > p_vector->size)
-    {
-        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)p_vector->size);
-        return;
-    }
-
-    size_t sizeEndArray = p_vector->size - i;
+    size_t sizeEndArray = vector_size(p_vector) - i;
 
     double *tmpEndArray = (double *)malloc(sizeof(double) * sizeEndArray);
     if (tmpEndArray == NULL)
     {
-        printf("Error to allocating memory\n");
+        printf("Error to allocating tmpEndArray\n");
         return;
     }
 
@@ -108,32 +110,33 @@ void vector_insert(p_s_vector p_vector, size_t i, double v)
     {
         tmpEndArray[j] = vector_get(p_vector, j + i);
     }
-
     vector_set(p_vector, i, v);
 
-    for (size_t j = 0; j < sizeEndArray; ++j)
+    for (size_t j = 0; j < sizeEndArray - 1; ++j)
     {
         vector_set(p_vector, j + i + 1, tmpEndArray[j]);
     }
 
-    ++p_vector->size;
+    free(tmpEndArray);
+    tmpEndArray = NULL;
 }
 
 void vector_erase(p_s_vector p_vector, size_t i)
 {
-    if (i > p_vector->size)
+    if (i >vector_size(p_vector))
     {
-        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)p_vector->size);
+        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
         return;
     }
-    else if (vector_empty(p_vector) == 1)
+
+    if (vector_empty(p_vector) == 1)
     {
         printf("Error the array it's empty !\n");
         return;
     }
 
     size_t iNext = i + 1;
-    size_t sizeEndArray = p_vector->size - iNext;
+    size_t sizeEndArray = vector_size(p_vector) - iNext;
 
     double *tmpEndArray = (double *)malloc(sizeof(double) * sizeEndArray);
     if (tmpEndArray == NULL)
@@ -151,11 +154,12 @@ void vector_erase(p_s_vector p_vector, size_t i)
     {
         vector_set(p_vector, j + i, tmpEndArray[j]);
     }
+    free(tmpEndArray);
+    tmpEndArray = NULL;
 
-
-    p_vector->tab = realloc(p_vector->tab, sizeof(double) * p_vector->size - 1);
+    p_vector->tab = realloc(p_vector->tab, sizeof(double) * vector_size(p_vector) - 1);
     if(p_vector->tab == NULL){
-        printf("Error to realloc memory\n");
+        printf("Error to realloc p_vector->tab\n");
         return;
     }
 
@@ -164,30 +168,29 @@ void vector_erase(p_s_vector p_vector, size_t i)
 
 void vector_push_back(p_s_vector p_vector, double v)
 {
-    vector_insert(p_vector, p_vector->size, v);
+    vector_insert(p_vector, vector_size(p_vector), v);
 }
 
 void vector_pop_back(p_s_vector p_vector)
 {
-    vector_erase(p_vector, p_vector->size - 1);
+    vector_erase(p_vector, vector_size(p_vector) - 1);
 }
 
 void vector_clear(p_s_vector p_vector)
 {
-    vector_free(p_vector);
-    p_vector = vector_alloc(0);
+    p_vector->size = 0;
+    p_vector->tab = realloc(p_vector->tab, sizeof(double) * p_vector->size);
 
-    if (p_vector == NULL)
+    if (p_vector->tab == NULL)
     {
-        printf("Error to realloc memory\n");
+        printf("Error to realloc p_vector->tab for cleaning\n");
         return;
     }
-    p_vector->size = 0;
 }
 
 int vector_empty(p_s_vector p_vector)
 {
-    return p_vector->size == 0 ? 1 : 0;
+    return vector_size(p_vector) == 0 ? 1 : 0;
 }
 
 size_t vector_size(p_s_vector p_vector)
