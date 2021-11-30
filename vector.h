@@ -5,6 +5,8 @@
 #ifndef _VECTOR_H_
 #define _VECTOR_H_
 
+#include <stdlib.h>
+#include <stdio.h>
 #include <stddef.h>
 
 struct struct_vector

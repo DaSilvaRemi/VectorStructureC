@@ -1,9 +1,6 @@
 //
 // Created by remid on 18/11/2021.
 //
-#include <stdlib.h>
-#include <stdio.h>
-#include <stddef.h>
 #include "vector.h"
 
 /**
