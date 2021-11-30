@@ -191,7 +191,7 @@ void vector_insert(p_s_vector p_vector, size_t i, double v)
  */
 void vector_erase(p_s_vector p_vector, size_t i)
 {
-    //Verify If user doesn't erase from the size of the tab.
+    //Verify if user doesn't erase from the size of the tab.
     if (i >= vector_size(p_vector))
     {
         printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
