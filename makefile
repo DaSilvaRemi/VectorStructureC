@@ -7,7 +7,7 @@ test_random : test_random.o random.o
 	gcc random.o test_random.o -g -o test_random
 
 bench_vector : bench_vector.o vector.o random.o
-	gcc random.o bench_vector.o -g -o bench_vector
+	gcc vector.o random.o bench_vector.o -g -o bench_vector
 
 vector.o : vector.c vector.h
 	gcc -Wall -Wextra -g -c vector.c
