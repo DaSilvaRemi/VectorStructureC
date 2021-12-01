@@ -12,7 +12,7 @@ int test_random_double(){
     double random = random_double(a, b);
 
     if(random < a && random >= b){
-        printf("Expected a random number in interval [%lf, %lf[ but was %f", a, b, random);
+        printf("Expected a random number in interval [%lf, %lf[ but was %lf", a, b, random);
         return -1;
     }
 
@@ -21,7 +21,7 @@ int test_random_double(){
     random = random_double(a, b);
 
     if(random < a && random >= b){
-        printf("Expected a random number in interval [%lf, %lf[ but was %f", a, b, random);
+        printf("Expected a random number in interval [%lf, %lf[ but was %lf", a, b, random);
         return -1;
     }
 
@@ -34,7 +34,7 @@ int test_random_float(){
     float random = random_float(a, b);
 
     if(random < a && random >= b){
-        printf("Expected a random number in interval [%f, %f[ but was %f", a, b, random);
+        printf("Expected a random number in interval [%lf, %lf[ but was %lf", a, b, random);
         return -1;
     }
 
@@ -43,7 +43,7 @@ int test_random_float(){
     random = random_double(a, b);
 
     if(random < a && random >= b){
-        printf("Expected a random number in interval [%f, %f[ but was %f", a, b, random);
+        printf("Expected a random number in interval [%lf, %lf[ but was %lf", a, b, random);
         return -1;
     }
 
