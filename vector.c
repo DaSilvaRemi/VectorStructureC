@@ -3,6 +3,8 @@
 //
 #include "vector.h"
 
+#ifdef V2
+
 /**
  * Alloc in memory a vector with a tab.
  *
@@ -15,7 +17,7 @@
 p_s_vector vector_alloc(size_t n)
 {
     //Allocate vector
-    p_s_vector vector = (p_s_vector) malloc(sizeof(s_vector));
+    p_s_vector vector = (p_s_vector)malloc(sizeof(s_vector));
 
     //If vector is NULL then return NULL
     if (vector == NULL)
@@ -25,7 +27,240 @@ p_s_vector vector_alloc(size_t n)
     }
 
     //Allocate Tab
-    vector->tab = (double *) malloc(sizeof(double) * n);
+    size_t capacity = n + 16;
+    vector->tab = (double *)malloc(sizeof(double) * capacity);
+
+    //If tab is NULL then return NULL
+    if (vector->tab == NULL)
+    {
+        printf("Error to allocating memory\n");
+        free(vector);
+        return NULL;
+    }
+
+    vector->size = n;
+    vector->capacity = capacity;
+
+    //Define n 0.0
+    for (size_t i = 0; i < vector->size; i++)
+    {
+        vector_set(vector, i, 0.0);
+    }
+
+    return vector;
+}
+
+/**
+ * Insert an element at i index.
+ * Extend size et shift to the right all elements which start at indice i. To insert the new element before actual
+ * element at i.
+ *
+ * @example We defined a tab with a size of 3 : [0.0, 1, 0.0]
+ * We insert 4.0 at position 1, the tab will be [0.0, 4.0, 1.0, 0.0]
+ *
+ * @params p_vector A pointer on struct vector
+ * @params i The index of the element à insérer
+ * @params v Value to set at i index
+ *
+ * @throws ErrorLimit Display CMD message if user try to insert with i > size
+ * @throws ErrorEmptyArray Display CMD message if the tab is empty
+ * @throws MallocException Display CMD message if we can't allocate memory
+ * @throws ReallocException Display CMD message if we can't reallocate memory
+ */
+void vector_insert(p_s_vector p_vector, size_t i, double v)
+{
+    //Verify If user doesn't insert over the size of the tab.
+    if (i > vector_size(p_vector))
+    {
+        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
+        return;
+    }
+
+    //We extend the size to add element
+    ++p_vector->size;
+
+    if (vector_size(p_vector) >= vector_capacity(p_vector))
+    {
+        p_vector->capacity *= 2;
+        //We reallocate memory of the tab with new capacity
+        p_vector->tab = realloc(p_vector->tab, sizeof(double) * p_vector->capacity);
+
+        //If p_vector->tab was NULL we display error
+        if (p_vector->tab == NULL)
+        {
+            printf("Error to realloc p_vector->tab !");
+            return;
+        }
+    }
+
+    //We define a limit [i; size[
+    size_t sizeEndArray = vector_size(p_vector) - i;
+
+    //We allocate a temp tab to get the end of the tab
+    double *tmpEndArray = (double *)malloc(sizeof(double) * sizeEndArray);
+
+    //If tmpEndArray was NULL we display error
+    if (tmpEndArray == NULL)
+    {
+        printf("Error to allocating tmpEndArray\n");
+        return;
+    }
+
+    //Get the elements in limit of [i; size[
+    for (size_t j = 0; j < sizeEndArray; ++j)
+    {
+        tmpEndArray[j] = vector_get(p_vector, j + i);
+    }
+
+    //Define new value at i index
+    vector_set(p_vector, i, v);
+
+    //Insert elements in ]i; size[ limit
+    for (size_t j = 0; j < sizeEndArray - 1; ++j)
+    {
+        vector_set(p_vector, j + i + 1, tmpEndArray[j]);
+    }
+
+    //Free tmpEndArray and set it to NULL
+    free(tmpEndArray);
+    tmpEndArray = NULL;
+}
+
+/**
+ * Erase element at position i.
+ * Reduce tab size and allocate memory size.
+ *
+ * @example We defined a tab with a size of 3 : [0.0, 1, 0.0]
+ * We suppr the element at the position 1. Tab values will be [0.0, 1.0] and the size will be 2.
+ *
+ * @params p_vector A pointer on struct vector
+ * @params i The index of the element to erase
+ *
+ * @throws ErrorLimit Display CMD message if user try to erase with i >= size
+ * @throws ErrorEmptyArray Display CMD message if the tab is empty
+ * @throws MallocException Display CMD message if we can't allocate memory
+ * @throws ReallocException Display CMD message if we can't reallocate memory
+ */
+void vector_erase(p_s_vector p_vector, size_t i)
+{
+    //Verify If user doesn't erase from the size of the tab.
+    if (i >= vector_size(p_vector))
+    {
+        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
+        return;
+    }
+
+    //If tab is empty we display error
+    if (vector_empty(p_vector) == 1)
+    {
+        printf("Error the array it's empty !\n");
+        return;
+    }
+
+    //We define ]i; size[ limit
+    size_t iNext = i + 1;
+    size_t sizeEndArray = vector_size(p_vector) - iNext;
+
+    //Allocate temp tab
+    double *tmpEndArray = (double *)malloc(sizeof(double) * sizeEndArray);
+
+    //If tmpEndArray was NULL we display error
+    if (tmpEndArray == NULL)
+    {
+        printf("Error to allocating memory\n");
+        return;
+    }
+
+    //Get elements in ]i; size[ limit
+    for (size_t j = 0; j < sizeEndArray; ++j)
+    {
+        tmpEndArray[j] = vector_get(p_vector, j + iNext);
+    }
+
+    //Set elements in [i; size[ limit, to errase the element at i
+    for (size_t j = 0; j < sizeEndArray; ++j)
+    {
+        //We use j at offset, because tmpEndArray and p_vector->tab doesn't have the same size
+        vector_set(p_vector, j + i, tmpEndArray[j]);
+    }
+
+    //Free tmpEndArray and set it to NULL
+    free(tmpEndArray);
+    tmpEndArray = NULL;
+
+    //Reduce the size
+    --p_vector->size;
+
+    if (vector_size(p_vector) <= vector_capacity(p_vector) / 4)
+    {
+        p_vector->capacity /= 4;
+
+        //Reallocate the memory with a reduced size tab
+        p_vector->tab = realloc(p_vector->tab, sizeof(double) * p_vector->capacity);
+
+        //If p_vector->tab was NULL we display error
+        if (p_vector->tab == NULL)
+        {
+            printf("Error to realloc p_vector->tab\n");
+            return;
+        }
+    }
+}
+
+size_t vector_capacity(p_s_vector p_vector)
+{
+    return p_vector->capacity;
+}
+
+/**
+ * Display vector struct with it values in CMD.
+ *
+ * @params p_vector A pointer on struct vector
+ */
+void toString(p_s_vector p_vector)
+{
+    printf("p_vector{\n tab : [");
+
+    size_t size = vector_size(p_vector);
+    for (size_t i = 0; i < size; i++)
+    {
+        printf("%f", vector_get(p_vector, i));
+
+        if (i < size - 1)
+        {
+            printf(", ");
+        }
+    }
+    printf("]\n");
+    printf("size : %lu\n", (unsigned long)size);
+     printf("capacity : %lu\n", (unsigned long)vector_capacity(p_vector));
+    printf("};\n");
+}
+#else
+
+/**
+ * Alloc in memory a vector with a tab.
+ *
+ * @params n Number of 0.0 set in the tab
+ *
+ * @return A pointer on struct vector or NULL if have error.
+ *
+ * @throws MallocException Display CMD message if we can't allocate memory
+ */
+p_s_vector vector_alloc(size_t n)
+{
+    //Allocate vector
+    p_s_vector vector = (p_s_vector)malloc(sizeof(s_vector));
+
+    //If vector is NULL then return NULL
+    if (vector == NULL)
+    {
+        printf("Error to allocating memory\n");
+        return NULL;
+    }
+
+    //Allocate Tab
+    vector->tab = (double *)malloc(sizeof(double) * n);
 
     //If tab is NULL then return NULL
     if (vector->tab == NULL)
@@ -47,17 +282,177 @@ p_s_vector vector_alloc(size_t n)
 }
 
 /**
- * Free the pointer dynamically allocate
+ * Insert an element at i index.
+ * Extend size et shift to the right all elements which start at indice i. To insert the new element before actual
+ * element at i.
+ *
+ * @example We defined a tab with a size of 3 : [0.0, 1, 0.0]
+ * We insert 4.0 at position 1, the tab will be [0.0, 4.0, 1.0, 0.0]
+ *
+ * @params p_vector A pointer on struct vector
+ * @params i The index of the element à insérer
+ * @params v Value to set at i index
+ *
+ * @throws ErrorLimit Display CMD message if user try to insert with i > size
+ * @throws ErrorEmptyArray Display CMD message if the tab is empty
+ * @throws MallocException Display CMD message if we can't allocate memory
+ * @throws ReallocException Display CMD message if we can't reallocate memory
+ */
+void vector_insert(p_s_vector p_vector, size_t i, double v)
+{
+    //Verify If user doesn't insert over the size of the tab.
+    if (i > vector_size(p_vector))
+    {
+        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
+        return;
+    }
+
+    //We extend the size to add element
+    ++p_vector->size;
+
+    //We reallocate memory of the tab with new size
+    p_vector->tab = realloc(p_vector->tab, sizeof(double) * vector_size(p_vector));
+
+    //If p_vector->tab was NULL we display error
+    if (p_vector->tab == NULL)
+    {
+        printf("Error to realloc p_vector->tab !");
+        return;
+    }
+
+    //We define a limit [i; size[
+    size_t sizeEndArray = vector_size(p_vector) - i;
+
+    //We allocate a temp tab to get the end of the tab
+    double *tmpEndArray = (double *)malloc(sizeof(double) * sizeEndArray);
+
+    //If tmpEndArray was NULL we display error
+    if (tmpEndArray == NULL)
+    {
+        printf("Error to allocating tmpEndArray\n");
+        return;
+    }
+
+    //Get the elements in limit of [i; size[
+    for (size_t j = 0; j < sizeEndArray; ++j)
+    {
+        tmpEndArray[j] = vector_get(p_vector, j + i);
+    }
+
+    //Define new value at i index
+    vector_set(p_vector, i, v);
+
+    //Insert elements in ]i; size[ limit
+    for (size_t j = 0; j < sizeEndArray - 1; ++j)
+    {
+        vector_set(p_vector, j + i + 1, tmpEndArray[j]);
+    }
+
+    //Free tmpEndArray and set it to NULL
+    free(tmpEndArray);
+    tmpEndArray = NULL;
+}
+
+/**
+ * Erase element at position i.
+ * Reduce tab size and allocate memory size.
+ *
+ * @example We defined a tab with a size of 3 : [0.0, 1, 0.0]
+ * We suppr the element at the position 1. Tab values will be [0.0, 1.0] and the size will be 2.
+ *
+ * @params p_vector A pointer on struct vector
+ * @params i The index of the element to erase
+ *
+ * @throws ErrorLimit Display CMD message if user try to erase with i >= size
+ * @throws ErrorEmptyArray Display CMD message if the tab is empty
+ * @throws MallocException Display CMD message if we can't allocate memory
+ * @throws ReallocException Display CMD message if we can't reallocate memory
+ */
+void vector_erase(p_s_vector p_vector, size_t i)
+{
+    //Verify If user doesn't erase from the size of the tab.
+    if (i >= vector_size(p_vector))
+    {
+        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
+        return;
+    }
+
+    //If tab is empty we display error
+    if (vector_empty(p_vector) == 1)
+    {
+        printf("Error the array it's empty !\n");
+        return;
+    }
+
+    //We define ]i; size[ limit
+    size_t iNext = i + 1;
+    size_t sizeEndArray = vector_size(p_vector) - iNext;
+
+    //Allocate temp tab
+    double *tmpEndArray = (double *)malloc(sizeof(double) * sizeEndArray);
+
+    //If tmpEndArray was NULL we display error
+    if (tmpEndArray == NULL)
+    {
+        printf("Error to allocating memory\n");
+        return;
+    }
+
+    //Get elements in ]i; size[ limit
+    for (size_t j = 0; j < sizeEndArray; ++j)
+    {
+        tmpEndArray[j] = vector_get(p_vector, j + iNext);
+    }
+
+    //Set elements in [i; size[ limit, to errase the element at i
+    for (size_t j = 0; j < sizeEndArray; ++j)
+    {
+        //We use j at offset, because tmpEndArray and p_vector->tab doesn't have the same size
+        vector_set(p_vector, j + i, tmpEndArray[j]);
+    }
+
+    //Free tmpEndArray and set it to NULL
+    free(tmpEndArray);
+    tmpEndArray = NULL;
+
+    //Reallocate the memory with a reduced size tab
+    p_vector->tab = realloc(p_vector->tab, sizeof(double) * vector_size(p_vector) - 1);
+
+    //If p_vector->tab was NULL we display error
+    if (p_vector->tab == NULL)
+    {
+        printf("Error to realloc p_vector->tab\n");
+        return;
+    }
+
+    //Reduce the size
+    --p_vector->size;
+}
+
+/**
+ * Display vector struct with it values in CMD.
  *
  * @params p_vector A pointer on struct vector
  */
-void vector_free(p_s_vector p_vector)
+void toString(p_s_vector p_vector)
 {
-    //Free tab, pointer and set it to NULL
-    free(p_vector->tab);
-    free(p_vector);
-    p_vector = NULL;
+    printf("p_vector{\n tab : [");
+
+    size_t size = vector_size(p_vector);
+    for (size_t i = 0; i < size; i++)
+    {
+        printf("%f", vector_get(p_vector, i));
+
+        if (i < size - 1)
+        {
+            printf(", ");
+        }
+    }
+    printf("]\n");
+    printf("size : %lu\n", (unsigned long)size);
+    printf("};\n");
 }
+#endif
 
 /**
  * Get element à la position i
@@ -103,99 +498,16 @@ void vector_set(p_s_vector p_vector, size_t i, double v)
 }
 
 /**
- * Insert an element at i index.
- * Extend size et shift to the right all elements which start at indice i. To insert the new element before actual
- * element at i.
- *
- * @example We defined a tab with a size of 3 : [0.0, 1, 0.0]
- * We insert 4.0 at position 1, the tab will be [0.0, 4.0, 1.0, 0.0]
+ * Free the pointer dynamically allocate
  *
  * @params p_vector A pointer on struct vector
- * @params i The index of the element à insérer
- * @params v Value to set at i index
- *
- * @throws ErrorLimit Display CMD message if user try to insert with i > size
- * @throws ErrorEmptyArray Display CMD message if the tab is empty
- * @throws MallocException Display CMD message if we can't allocate memory
- * @throws ReallocException Display CMD message if we can't reallocate memory
  */
-void vector_insert(p_s_vector p_vector, size_t i, double v)
+void vector_free(p_s_vector p_vector)
 {
-    //Verify If user doesn't erase over the size of the tab.
-    if (i > vector_size(p_vector))
-    {
-        //printf("Error limit of the array is [%d; %lu[\n", 0,  (unsigned long) vector_size(p_vector));
-        return;
-    }
-
-    //We extend the size to add element
-    ++p_vector->size;
-
-    //We reallocate memory of the tab with new size
-    p_vector->tab = realloc(p_vector->tab, sizeof(double) * vector_size(p_vector));
-
-    //If p_vector->tab was NULL we display error
-    if (p_vector->tab == NULL)
-    {
-        printf("Error to realloc p_vector->tab !");
-        return;
-    }
-
-    //We shift to the right after i
-    for(size_t j = vector_size(p_vector) - 1; j > i ; --j){
-        vector_set(p_vector, j, vector_get(p_vector, j - 1));
-    }
-    //Define new value at i index
-    vector_set(p_vector, i, v);
-}
-
-/**
- * Erase element at position i.
- * Reduce tab size and allocate memory size.
- *
- * @example We defined a tab with a size of 3 : [0.0, 1, 0.0]
- * We suppr the element at the position 1. Tab values will be [0.0, 1.0] and the size will be 2.
- *
- * @params p_vector A pointer on struct vector
- * @params i The index of the element to erase
- *
- * @throws ErrorLimit Display CMD message if user try to erase with i >= size
- * @throws ErrorEmptyArray Display CMD message if the tab is empty
- * @throws MallocException Display CMD message if we can't allocate memory
- * @throws ReallocException Display CMD message if we can't reallocate memory
- */
-void vector_erase(p_s_vector p_vector, size_t i)
-{
-    //Verify if user doesn't erase from the size of the tab.
-    if (i >= vector_size(p_vector))
-    {
-        printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
-        return;
-    }
-
-    //If tab is empty we display error
-    if (vector_empty(p_vector) == 1)
-    {
-        printf("Error the array it's empty !\n");
-        return;
-    }
-
-    for(size_t j = i; j < vector_size(p_vector) - 1; j++){
-
-        vector_set(p_vector, j, vector_get(p_vector, j + 1));
-    }
-
-    //Reallocate the memory with a reduced size tab
-    p_vector->tab = realloc(p_vector->tab, sizeof(double) * vector_size(p_vector) - 1);
-
-    //If p_vector->tab was NULL we display error
-    if(p_vector->tab == NULL){
-        printf("Error to realloc p_vector->tab\n");
-        return;
-    }
-
-    //Reduce the size
-    --p_vector->size;
+    //Free tab, pointer and set it to NULL
+    free(p_vector->tab);
+    free(p_vector);
+    p_vector = NULL;
 }
 
 /**
@@ -277,28 +589,4 @@ int vector_empty(p_s_vector p_vector)
 size_t vector_size(p_s_vector p_vector)
 {
     return p_vector->size;
-}
-
-/**
- * Display vector struct with it values in CMD.
- *
- * @params p_vector A pointer on struct vector
- */
-void toString(p_s_vector p_vector)
-{
-    printf("p_vector{\n tab : [");
-
-    size_t size = vector_size(p_vector);
-    for (size_t i = 0; i < size; i++)
-    {
-        printf("%f", vector_get(p_vector, i));
-
-        if (i < size - 1)
-        {
-            printf(", ");
-        }
-    }
-    printf("]\n");
-    printf("size : %lu\n", (unsigned long)size);
-    printf("};\n");
 }

@@ -21,7 +21,7 @@ p_s_vector allocate_random_vector(size_t init_size){
 }
 
 void insert_erase_random(p_s_vector p_vector, size_t n){
-    for(size_t i = 0; i < 1; ++i){
+    for(size_t i = 0; i < n; ++i){
         vector_insert(p_vector, random_size_t(0, vector_size(p_vector)), random_double(0, 50));
         vector_erase(p_vector, random_size_t(0, vector_size(p_vector)));
     }
