@@ -9,6 +9,7 @@ int test_my_struct_alloc(){
     p_s_my_struct my_struct = my_struct_alloc();
 
     if(my_struct == NULL){
+        printf("my_struct was null !");
         return -1;
     }
 
@@ -16,9 +17,19 @@ int test_my_struct_alloc(){
 }
 
 int test_my_struct_random_init(p_s_my_struct p_vector){
-    if(){
+    my_struct_randoms_init(p_vector);
 
+    if(p_vector->str == NULL){
+        printf("p_vector->str was null !");
+        return -1;
     }
+
+    if(str_len(p_vector->str) > 0){
+        printf("Expected p_vector->str > 1 but was %lu ", (unsigned long) str_len(p_vector->str));
+        return -1;
+    }
+
+    return 1;
 }
 
 int test_my_struct_copy(p_s_my_struct p_vector){

@@ -1,3 +1,6 @@
-^test
-^bench
+test_vector
+test_random
+test_my_struct
+bench_vector
+bench_vector_v2
 *.o

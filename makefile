@@ -40,4 +40,4 @@ bench_vector.o : bench_vector.c
 	gcc -Wall -Wextra -g -c bench_vector.c
 
 clean :
-	rm -f *.o prog
+	rm -f *.o test_vector test_random test_my_struct bench_vector bench_vector_v2

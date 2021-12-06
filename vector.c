@@ -8,7 +8,7 @@
 /**
  * Alloc in memory a vector with a tab.
  *
- * @params n Number of 0.0 set in the tab
+ * @param n Number of 0.0 set in the tab
  *
  * @return A pointer on struct vector or NULL if have error.
  *
@@ -58,9 +58,9 @@ p_s_vector vector_alloc(size_t n)
  * @example We defined a tab with a size of 3 : [0.0, 1, 0.0]
  * We insert 4.0 at position 1, the tab will be [0.0, 4.0, 1.0, 0.0]
  *
- * @params p_vector A pointer on struct vector
- * @params i The index of the element à insérer
- * @params v Value to set at i index
+ * @param p_vector A pointer on struct vector
+ * @param i The index of the element à insérer
+ * @param v Value to set at i index
  *
  * @throws ErrorLimit Display CMD message if user try to insert with i > size
  * @throws ErrorEmptyArray Display CMD message if the tab is empty
@@ -133,8 +133,8 @@ void vector_insert(p_s_vector p_vector, size_t i, double v)
  * @example We defined a tab with a size of 3 : [0.0, 1, 0.0]
  * We suppr the element at the position 1. Tab values will be [0.0, 1.0] and the size will be 2.
  *
- * @params p_vector A pointer on struct vector
- * @params i The index of the element to erase
+ * @param p_vector A pointer on struct vector
+ * @param i The index of the element to erase
  *
  * @throws ErrorLimit Display CMD message if user try to erase with i >= size
  * @throws ErrorEmptyArray Display CMD message if the tab is empty
@@ -215,7 +215,7 @@ size_t vector_capacity(p_s_vector p_vector)
 /**
  * Display vector struct with it values in CMD.
  *
- * @params p_vector A pointer on struct vector
+ * @param p_vector A pointer on struct vector
  */
 void toString(p_s_vector p_vector)
 {
@@ -241,7 +241,7 @@ void toString(p_s_vector p_vector)
 /**
  * Alloc in memory a vector with a tab.
  *
- * @params n Number of 0.0 set in the tab
+ * @param n Number of 0.0 set in the tab
  *
  * @return A pointer on struct vector or NULL if have error.
  *
@@ -289,9 +289,9 @@ p_s_vector vector_alloc(size_t n)
  * @example We defined a tab with a size of 3 : [0.0, 1, 0.0]
  * We insert 4.0 at position 1, the tab will be [0.0, 4.0, 1.0, 0.0]
  *
- * @params p_vector A pointer on struct vector
- * @params i The index of the element à insérer
- * @params v Value to set at i index
+ * @param p_vector A pointer on struct vector
+ * @param i The index of the element à insérer
+ * @param v Value to set at i index
  *
  * @throws ErrorLimit Display CMD message if user try to insert with i > size
  * @throws ErrorEmptyArray Display CMD message if the tab is empty
@@ -360,8 +360,8 @@ void vector_insert(p_s_vector p_vector, size_t i, double v)
  * @example We defined a tab with a size of 3 : [0.0, 1, 0.0]
  * We suppr the element at the position 1. Tab values will be [0.0, 1.0] and the size will be 2.
  *
- * @params p_vector A pointer on struct vector
- * @params i The index of the element to erase
+ * @param p_vector A pointer on struct vector
+ * @param i The index of the element to erase
  *
  * @throws ErrorLimit Display CMD message if user try to erase with i >= size
  * @throws ErrorEmptyArray Display CMD message if the tab is empty
@@ -432,7 +432,7 @@ void vector_erase(p_s_vector p_vector, size_t i)
 /**
  * Display vector struct with it values in CMD.
  *
- * @params p_vector A pointer on struct vector
+ * @param p_vector A pointer on struct vector
  */
 void toString(p_s_vector p_vector)
 {
@@ -457,8 +457,8 @@ void toString(p_s_vector p_vector)
 /**
  * Get element à la position i
  *
- * @params p_vector A pointer on struct vector
- * @params i The index of the element à récupérer
+ * @param p_vector A pointer on struct vector
+ * @param i The index of the element à récupérer
  *
  * @return Value at the index i
  *
@@ -479,9 +479,9 @@ double vector_get(p_s_vector p_vector, size_t i)
 /**
  * Modify element at i position
  *
- * @params p_vector A pointer on struct vector
- * @params i The index of the element à modifier
- * @params v Value to set at index i
+ * @param p_vector A pointer on struct vector
+ * @param i The index of the element à modifier
+ * @param v Value to set at index i
  *
  * @throws ErrorLimit Display CMD message if user try to modify with i >= size
  */
@@ -500,7 +500,7 @@ void vector_set(p_s_vector p_vector, size_t i, double v)
 /**
  * Free the pointer dynamically allocate
  *
- * @params p_vector A pointer on struct vector
+ * @param p_vector A pointer on struct vector
  */
 void vector_free(p_s_vector p_vector)
 {
@@ -520,8 +520,8 @@ void vector_free(p_s_vector p_vector)
  * We insert 4.0 in the end so at position 3.
  * The values of the tab will be [0.0, 0.0, 1.0, 4.0], the size will be 4.
  *
- * @params p_vector A pointer on struct vector
- * @params v The value to insert
+ * @param p_vector A pointer on struct vector
+ * @param v The value to insert
  */
 void vector_push_back(p_s_vector p_vector, double v)
 {
@@ -536,7 +536,7 @@ void vector_push_back(p_s_vector p_vector, double v)
  * @example We defined a tab with a size of 3 : [0.0, 4.0, 0.0].
  * We delete the last element. The value of tab will be [0.0, 4.0] and the size will be 2.
  *
- * @params p_vector A pointer on struct vector
+ * @param p_vector A pointer on struct vector
  */
 void vector_pop_back(p_s_vector p_vector)
 {
@@ -548,7 +548,7 @@ void vector_pop_back(p_s_vector p_vector)
  * Erase all elements of tab with reallocating memory.
  * Set the size to 0.
  *
- * @params p_vector A pointer on struct vector
+ * @param p_vector A pointer on struct vector
  *
  * @throws MallocException Display CMD message if we can't allocate memory
  */
@@ -570,7 +570,7 @@ void vector_clear(p_s_vector p_vector)
 /**
  * Return if the tab is empty if the size is equal to 0.
  *
- * @params p_vector A pointer on struct vector
+ * @param p_vector A pointer on struct vector
  *
  * @return 1 if tab is empty else 0
  */
@@ -582,7 +582,7 @@ int vector_empty(p_s_vector p_vector)
 /**
  * Return the size of the tab
  *
- * @params p_vector A pointer on struct vector
+ * @param p_vector A pointer on struct vector
  *
  * @returns The size of the tab
  */

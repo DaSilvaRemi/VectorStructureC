@@ -15,6 +15,9 @@ p_s_my_struct my_struct_alloc(){
         return NULL;
     }
 
+    my_struct->str = NULL;
+    my_struct->nb = 0.0;
+
     return my_struct;
 }
 
@@ -32,29 +35,50 @@ void my_struct_randoms_init(p_s_my_struct p_vector){
     if (p_vector->str == NULL)
     {
         printf("Error to allocating memory\n");
-        return NULL;
+        return;
     }
 
     random_init_string(p_vector->str, size);
     p_vector->nb = random_double(0, 50);
-    p_vector->size = size;
 }
 
 void my_struct_copy(p_s_my_struct p_dest, p_s_my_struct p_src){
     p_dest->nb = p_src->nb;
-    p_dest->size = p_src->size;
-    p_dest->str = realloc(p_dest->str, sizeof(char*) * p_src->size);
+    p_dest->str = realloc(p_dest->str, sizeof(char*) * str_len(p_src->str));
 
     if(p_dest->str == NULL){
         printf("Error to allocating memory\n");
         return;
     }
 
-    for (int i = 0;  p_src->str[i] != '\0' ; ++i) {
-        p_dest->str[i] = p_src->str[i];
+    size_t i = 0;
+    while(p_src->str[i] != '\0'){
+        p_dest->str[i] = p_src->str[i];;
+        ++i;
     }
+
+    p_dest->str[i] = '\0';
 }
 
 int my_struct_cmp(p_s_my_struct p_vector_a, p_s_my_struct p_vector_b){
-    return p_vector_a->nb > p_vector_b->nb ? 0 : p_vector_a->nb < p_vector_b->nb ? -1 : 0;
+    if(p_vector_a->nb > p_vector_b->nb){
+        return 1;
+    }else if(p_vector_a->nb < p_vector_b->nb){
+        return -1;
+    }else{
+        size_t p_vector_a_str_len = str_len(p_vector_a->str);
+        size_t p_vector_b_str_len = str_len(p_vector_b->str);
+
+        return p_vector_a_str_len > p_vector_b_str_len ? 1 : p_vector_a_str_len < p_vector_b_str_len ? -1 : 0;
+    }
+}
+
+size_t str_len(unsigned char* s){
+    size_t i = 0;
+
+    while(str[i] != '\0'){
+        ++i;
+    }
+
+    return i;
 }

@@ -5,7 +5,11 @@
 #include <time.h>
 #include "random.h"
 
-
+/**
+ * T.U. on random_double
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_random_double(){
     double a = 1.0;
     double b = 4.0;
@@ -28,6 +32,11 @@ int test_random_double(){
     return 1;
 }
 
+/**
+ * T.U. on random_float
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_random_float(){
     float a = 1.5f;
     float b = 4.5f;
@@ -50,6 +59,11 @@ int test_random_float(){
     return 1;
 }
 
+/**
+ * T.U. on random_size_t
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_random_size_t(){
     size_t a = 5;
     size_t b = 10;
@@ -72,6 +86,11 @@ int test_random_size_t(){
     return 1;
 }
 
+/**
+ * T.U. on random_int
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_random_int(){
     int a = 5;
     int b = 10;
@@ -94,6 +113,11 @@ int test_random_int(){
     return 1;
 }
 
+/**
+ * T.U. on random_uchar
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_random_uchar(){
     unsigned char a = 'a';
     unsigned char b = 'z';
@@ -116,6 +140,11 @@ int test_random_uchar(){
     return 1;
 }
 
+/**
+ * T.U. on random_init_string
+ *
+ * @return 1 if passed -1 otherwise
+ */
 int test_random_init_string(){
     size_t n = 20;
     int isPassed = 1;
