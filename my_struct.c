@@ -11,7 +11,7 @@ p_s_my_struct my_struct_alloc(){
     //If struct is NULL then return NULL
     if (my_struct == NULL)
     {
-        printf("Error to allocating memory\n");
+        printf("Error : my_struct was nos allocate ! \n");
         return NULL;
     }
 
@@ -34,7 +34,7 @@ void my_struct_randoms_init(p_s_my_struct p_vector){
     //If struct is NULL then return NULL
     if (p_vector->str == NULL)
     {
-        printf("Error to allocating memory\n");
+        printf("Error : str was nos allocate ! \n");
         return;
     }
 
@@ -47,7 +47,7 @@ void my_struct_copy(p_s_my_struct p_dest, p_s_my_struct p_src){
     p_dest->str = realloc(p_dest->str, sizeof(char*) * str_len(p_src->str));
 
     if(p_dest->str == NULL){
-        printf("Error to allocating memory\n");
+        printf("Error : str was nos allocate ! \n");
         return;
     }
 
