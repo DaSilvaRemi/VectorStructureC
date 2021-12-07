@@ -50,12 +50,16 @@ int test_my_struct_copy(p_s_my_struct my_struct){
         isPassed = -1;
     }
 
-    for(size_t i = 0; i  < p_dest->str[i] != '\0'; ++i){
+    for(size_t i = 0; p_dest->str[i] != '\0'; ++i){
         if(my_struct->str[i] != p_dest->str[i]){
             printf("Error : expected %c but was %c \n", my_struct->str[i], p_dest->str[i]);
             isPassed = -1;
         }
+    }
 
+    if(my_struct->nb != p_dest->nb){
+        printf("Error : expected %lf but was %lf \n", my_struct->nb, p_dest->nb);
+        isPassed = -1;
     }
 
     my_struct_free(p_dest);
@@ -63,7 +67,13 @@ int test_my_struct_copy(p_s_my_struct my_struct){
 }
 
 int test_my_struct_cmp(p_s_my_struct my_struct){
+    p_s_my_struct p_cmp = my_struct_alloc();
+    my_struct_randoms_init(p_cmp);
+    int result = my_struct_cmp(my_struct, p_cmp);
 
+    if(result != -1 && result != 1 && result != 0){
+        printf("Error : expected [-1 or 0 or 1] but was %d \n", result);
+    }
 }
 
 
@@ -74,11 +84,11 @@ int main (int argc, char* argv[]){
 
     printf("%s \n", test_my_struct_alloc() == 1 ? "Test Allocate passed" : "Test Allocate Failed");
 
-    printf("%s \n", test_my_struct_random_init() == 1 ? "Test Get passed" : "Test Free Failed");
+    printf("%s \n", test_my_struct_random_init() == 1 ? "Test Init passed" : "Test Init Failed");
 
-    printf("%s \n", test_my_struct_copy() == 1 ? "Test Set passed" : "Test Free Failed");
+    printf("%s \n", test_my_struct_copy() == 1 ? "Test Copy passed" : "Test Copy Failed");
 
-    printf("%s \n", test_my_struct_cmp() == 1 ? "Test Insert passed" : "Test Insert Failed");
+    printf("%s \n", test_my_struct_cmp() == 1 ? "Test CMP passed" : "Test CMP Failed");
 
     return 0;
 }
