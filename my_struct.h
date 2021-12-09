@@ -14,8 +14,8 @@ struct struct_my_struct{
     double nb;
 };
 
-typedef struct struct_my_struct s_my_struct
-typedef s_my_struct* p_s_my_struct
+typedef struct struct_my_struct s_my_struct;
+typedef s_my_struct* p_s_my_struct;
 
 p_s_my_struct my_struct_alloc();
 void my_struct_free(p_s_my_struct p_vector);

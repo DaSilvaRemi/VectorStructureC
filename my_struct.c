@@ -60,23 +60,23 @@ void my_struct_copy(p_s_my_struct p_dest, p_s_my_struct p_src){
     p_dest->str[i] = '\0';
 }
 
-int my_struct_cmp(p_s_my_struct p_vector_a, p_s_my_struct p_vector_b){
-    if(p_vector_a->nb > p_vector_b->nb){
+int my_struct_cmp(p_s_my_struct p_vector_a, p_s_my_struct p_struct_b){
+    if(p_vector_a->nb > p_struct_b->nb){
         return 1;
-    }else if(p_vector_a->nb < p_vector_b->nb){
+    }else if(p_vector_a->nb < p_struct_b->nb){
         return -1;
     }else{
         size_t p_vector_a_str_len = str_len(p_vector_a->str);
-        size_t p_vector_b_str_len = str_len(p_vector_b->str);
+        size_t p_struct_b_str_len = str_len(p_struct_b->str);
 
-        return p_vector_a_str_len > p_vector_b_str_len ? 1 : p_vector_a_str_len < p_vector_b_str_len ? -1 : 0;
+        return p_vector_a_str_len > p_struct_b_str_len ? 1 : p_vector_a_str_len < p_struct_b_str_len ? -1 : 0;
     }
 }
 
 size_t str_len(unsigned char* s){
     size_t i = 0;
 
-    while(str[i] != '\0'){
+    while(s[i] != '\0'){
         ++i;
     }
 

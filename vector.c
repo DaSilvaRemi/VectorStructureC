@@ -12,7 +12,7 @@
  *
  * @throws MallocException Display CMD message if we can't allocate memory
  */
-p_s_vector vector_alloc(size_t n)
+p_s_vector vector_alloc(size_t n, t_data_alloc alloc_func, t_data_free free_func, t_data_cpy cpy_func)
 {
     //Allocate vector
     p_s_vector vector = (p_s_vector)malloc(sizeof(s_vector));
@@ -38,11 +38,14 @@ p_s_vector vector_alloc(size_t n)
 
     vector->size = n;
     vector->capacity = capacity;
+    vector->alloc_func = alloc_func;
+    vector->free_func = free_func;
+    vector->cpy_func = cpy_func;
 
     //Define n NULL
     for (size_t i = 0; i < vector->capacity; i++)
     {
-        vector->tab[i] = NULL;
+        vector->tab[i] = (*vector->alloc_func)();
     }
 
     return vector;
@@ -55,10 +58,28 @@ p_s_vector vector_alloc(size_t n)
  */
 void vector_free(p_s_vector p_vector)
 {
+    if(p_vector == NULL){
+        printf("Error you passing a pointer set to null");
+        return;
+    }
     //Free tab, pointer and set it to NULL
-    free(p_vector->tab);
+    vector_free_tab(p_vector);
     free(p_vector);
     p_vector = NULL;
+}
+
+void vector_free_tab(p_s_vector p_vector){
+    if(p_vector == NULL || p_vector->tab == NULL){
+        printf("Error you passing a pointer of tab set to null");
+        return;
+    }
+
+    for (size_t i = 0; i < p_vector->capacity; ++i) {
+        (*p_vector->free_func)(p_vector->tab[i]);
+    }
+
+    free(p_vector->tab);
+    p_vector->tab = NULL;
 }
 
 /**
@@ -71,16 +92,17 @@ void vector_free(p_s_vector p_vector)
  *
  * @throws ErrorLimit Display CMD message if user try to get with i >= size
  */
-void* vector_get(p_s_vector p_vector, size_t i)
+void vector_get(p_s_vector p_vector, size_t i, void* p_data)
 {
     //Verify If user doesn't erase from the size of the tab.
     if (i >= vector_size(p_vector))
     {
         printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
-        return (void *) -1;
+        p_data = (*p_vector->alloc_func)();
+        return;
     }
 
-    return p_vector->tab[i];
+    (*p_vector->cpy_func)(p_vector->tab[i], p_data);
 }
 
 /**
@@ -101,7 +123,7 @@ void vector_set(p_s_vector p_vector, size_t i, void* v)
         return;
     }
 
-    p_vector->tab[i] = v;
+    (*p_vector->cpy_func)(v, p_vector->tab[i]);
 }
 
 /**
@@ -163,7 +185,7 @@ void vector_insert(p_s_vector p_vector, size_t i, void* v)
     //Get the elements in limit of [i; size[
     for (size_t j = 0; j < sizeEndArray; ++j)
     {
-        tmpEndArray[j] = vector_get(p_vector, j + i);
+         vector_get(p_vector, j + i, tmpEndArray[j]);
     }
 
     //Define new value at i index
@@ -228,7 +250,7 @@ void vector_erase(p_s_vector p_vector, size_t i)
     //Get elements in ]i; size[ limit
     for (size_t j = 0; j < sizeEndArray; ++j)
     {
-        tmpEndArray[j] = vector_get(p_vector, j + iNext);
+        vector_get(p_vector, j + iNext, tmpEndArray[j]);
     }
 
     //Set elements in [i; size[ limit, to erase the element at i
@@ -316,9 +338,9 @@ int vector_empty(p_s_vector p_vector){
  */
 void vector_clear(p_s_vector p_vector)
 {
-    //Set size to 0, free old tab and allocate memory
-    free(p_vector->tab);
-    p_vector->tab = malloc(sizeof(void*) * 16);
+    vector_free_tab(p_vector);
+
+    p_vector->tab = malloc(sizeof(void *) * 16);
 
     //If tab is empty we display error
     if (p_vector->tab == NULL)
@@ -339,10 +361,13 @@ void toString(p_s_vector p_vector)
 {
     printf("p_vector{\n tab : [");
 
+    void* element = NULL;
+
     size_t size = vector_size(p_vector);
     for (size_t i = 0; i < size; i++)
     {
-        printf("%p", vector_get(p_vector, i));
+        vector_get(p_vector, i, element);
+        printf("%p", element);
 
         if (i < size - 1)
         {
@@ -351,7 +376,7 @@ void toString(p_s_vector p_vector)
     }
     printf("]\n");
     printf("size : %lu\n", (unsigned long)size);
-     printf("capacity : %lu\n", (unsigned long)vector_capacity(p_vector));
+    printf("capacity : %lu\n", (unsigned long)vector_capacity(p_vector));
     printf("};\n");
 }
 
