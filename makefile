@@ -1,7 +1,7 @@
 all : test_vector
 
-test_vector : test_vector.o vector.o
-	gcc vector.o test_vector.o -g -o test_vector
+test_vector : test_vector.o vector.o random.o
+	gcc vector.o random.o test_vector.o -g -o test_vector
 
 test_random : test_random.o random.o
 	gcc random.o test_random.o -g -o test_random

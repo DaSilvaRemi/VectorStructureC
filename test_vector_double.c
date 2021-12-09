@@ -196,7 +196,7 @@ int test_vector_insert()
         isPassed = -1;
     }
 
-    /*//Test insert in the end of the tab
+    //Test insert in the end of the tab
     i = vector_size(vector);
     j = 10.0;
     expected_size = i + 1;

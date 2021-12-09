@@ -207,6 +207,12 @@ void vector_erase(p_s_vector p_vector, size_t i)
     }
 }
 
+/**
+ * Get the capacity of the vector
+ *
+ * @param p_vector A pointer in the vector
+ * @return The capacity of the vector
+ */
 size_t vector_capacity(p_s_vector p_vector)
 {
     return p_vector->capacity;
