@@ -46,6 +46,7 @@ p_s_vector vector_alloc(size_t n, t_data_alloc alloc_func, t_data_free free_func
     for (size_t i = 0; i < vector->capacity; i++)
     {
         vector->tab[i] = (*vector->alloc_func)();
+
     }
 
     return vector;
@@ -92,17 +93,20 @@ void vector_free_tab(p_s_vector p_vector){
  *
  * @throws ErrorLimit Display CMD message if user try to get with i >= size
  */
-void vector_get(p_s_vector p_vector, size_t i, void* p_data)
+int vector_get(p_s_vector p_vector, size_t i, void* p_data)
 {
     //Verify If user doesn't erase from the size of the tab.
     if (i >= vector_size(p_vector))
     {
         printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
-        p_data = (*p_vector->alloc_func)();
-        return;
+        return -1;
+    }else if(p_data == NULL){
+        printf("Error p_data it's a NULL value\n");
+        return -1;
     }
 
     (*p_vector->cpy_func)(p_vector->tab[i], p_data);
+    return 0;
 }
 
 /**
@@ -172,20 +176,20 @@ void vector_insert(p_s_vector p_vector, size_t i, void* v)
     //We define a limit [i; size[
     size_t sizeEndArray = vector_size(p_vector) - i;
 
-    //We allocate a temp tab to get the end of the tab
-    void** tmpEndArray = (void **) malloc(sizeof(void *) * sizeEndArray);
+    //We allocate a temp vector to get the end of the tab
+    p_s_vector tmp_vector = vector_alloc(sizeEndArray, p_vector->alloc_func, p_vector->free_func, p_vector->cpy_func);
 
     //If tmpEndArray was NULL we display error
-    if (tmpEndArray == NULL)
+    if (tmp_vector == NULL)
     {
-        printf("Error to allocating tmpEndArray\n");
+        printf("Error to allocating tmp_vector\n");
         return;
     }
 
     //Get the elements in limit of [i; size[
     for (size_t j = 0; j < sizeEndArray; ++j)
     {
-         vector_get(p_vector, j + i, tmpEndArray[j]);
+        vector_get(p_vector, j + i, tmp_vector->tab[j]);
     }
 
     //Define new value at i index
@@ -194,12 +198,11 @@ void vector_insert(p_s_vector p_vector, size_t i, void* v)
     //Insert elements in ]i; size[ limit
     for (size_t j = 0; j < sizeEndArray - 1; ++j)
     {
-        vector_set(p_vector, j + i + 1, tmpEndArray[j]);
+        vector_set(p_vector, j + i + 1, tmp_vector->tab[j]);
     }
 
     //Free tmpEndArray and set it to NULL
-    free(tmpEndArray);
-    tmpEndArray = NULL;
+    vector_free(tmp_vector);
 }
 
 /**
@@ -238,10 +241,10 @@ void vector_erase(p_s_vector p_vector, size_t i)
     size_t sizeEndArray = vector_size(p_vector) - iNext;
 
     //Allocate temp tab
-    void **tmpEndArray = (void **) malloc(sizeof(void*) * sizeEndArray);
+    p_s_vector tmp_vector = vector_alloc(sizeEndArray, p_vector->alloc_func, p_vector->free_func, p_vector->cpy_func);
 
-    //If tmpEndArray was NULL we display error
-    if (tmpEndArray == NULL)
+    //If tmp_vector was NULL we display error
+    if (tmp_vector == NULL)
     {
         printf("Error to allocating memory\n");
         return;
@@ -250,19 +253,18 @@ void vector_erase(p_s_vector p_vector, size_t i)
     //Get elements in ]i; size[ limit
     for (size_t j = 0; j < sizeEndArray; ++j)
     {
-        vector_get(p_vector, j + iNext, tmpEndArray[j]);
+        vector_get(p_vector, j + iNext, tmp_vector->tab[j]);
     }
 
     //Set elements in [i; size[ limit, to erase the element at i
     for (size_t j = 0; j < sizeEndArray; ++j)
     {
-        //We use j at offset, because tmpEndArray and p_vector->tab doesn't have the same size
-        vector_set(p_vector, j + i, tmpEndArray[j]);
+        //We use j at offset, because tmp_vector and p_vector->tab doesn't have the same size
+        vector_set(p_vector, j + i, tmp_vector->tab[j]);
     }
 
-    //Free tmpEndArray and set it to NULL
-    free(tmpEndArray);
-    tmpEndArray = NULL;
+    //Free tmp_vector and set it to NULL
+    vector_free(tmp_vector);
 
     //Reduce the size
     --p_vector->size;
@@ -366,7 +368,7 @@ void toString(p_s_vector p_vector)
     size_t size = vector_size(p_vector);
     for (size_t i = 0; i < size; i++)
     {
-        vector_get(p_vector, i, element);
+        element = p_vector->tab[i];
         printf("%p", element);
 
         if (i < size - 1)

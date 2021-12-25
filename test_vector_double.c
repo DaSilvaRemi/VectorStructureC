@@ -2,7 +2,7 @@
 // Created by remid on 18/11/2021.
 //
 #include <stdio.h>
-#include "vector.h"
+#include "vector_double.h"
 
 /**
  * T.U. on vector_alloc
@@ -15,12 +15,14 @@ int test_vector_alloc()
     p_s_vector vector = vector_alloc(expected_size);
 
     //Test NULL values
-    if(vector == NULL){
+    if (vector == NULL)
+    {
         printf("Error : vector was nos allocate ! \n");
         return -1;
     }
 
-    if(vector->tab == NULL){
+    if (vector->tab == NULL)
+    {
         printf("Error : vector->tab was nos allocate ! \n");
         return -1;
     }
@@ -40,12 +42,14 @@ int test_vector_alloc()
     vector = vector_alloc(expected_size);
 
     //Test NULL values
-    if(vector == NULL){
+    if (vector == NULL)
+    {
         printf("Error : vector was nos allocate ! \n");
         return -1;
     }
 
-    if(vector->tab == NULL){
+    if (vector->tab == NULL)
+    {
         printf("Error : vector->tab was nos allocate ! \n");
         return -1;
     }
@@ -141,8 +145,8 @@ int test_vector_set()
     //Test set to 7.5
     expected_result = 7.5;
     i = 9;
-    vector_set(vector, i , expected_result);
-    result = vector_get(vector, i );
+    vector_set(vector, i, expected_result);
+    result = vector_get(vector, i);
 
     if (result != expected_result)
     {
@@ -178,7 +182,7 @@ int test_vector_insert()
     //Test insert in the middle of the tab
     if (real_size != expected_size)
     {
-        printf("Error : expected size %lu but was %lu \n", (unsigned long)expected_size, (unsigned long) real_size);
+        printf("Error : expected size %lu but was %lu \n", (unsigned long)expected_size, (unsigned long)real_size);
         isPassed = -1;
     }
 
@@ -226,7 +230,7 @@ int test_vector_insert()
     {
         printf("Error : expected size %lu but was %lu \n", (unsigned long)expected_size, (unsigned long)real_size);
         isPassed = -1;
-    }*/
+    }
 
     vector_free(vector);
     return isPassed;
@@ -393,7 +397,8 @@ int test_vector_clear()
     double j = 1.0;
     int isPassed = 1;
 
-    for(size_t i = 0; i < size; i++){
+    for (size_t i = 0; i < size; i++)
+    {
         vector_set(vector, i, j);
         ++j;
     }
@@ -401,7 +406,8 @@ int test_vector_clear()
     vector_clear(vector);
     size = vector_size(vector);
 
-    if(size != 0){
+    if (size != 0)
+    {
         printf("Error : expected size %d but was %lu \n", 0, (unsigned long)size);
         isPassed = -1;
     }
@@ -409,9 +415,11 @@ int test_vector_clear()
     //Test to add after clear
     double result = 0.0;
     double expected = result;
-    for(size_t i = 0; i < size; i++){
+    for (size_t i = 0; i < size; i++)
+    {
         result = vector_get(vector, i);
-        if(result != expected){
+        if (result != expected)
+        {
             printf("Error : expected %lf but was %lf \n", expected, result);
             isPassed = -1;
         }
@@ -423,14 +431,16 @@ int test_vector_clear()
     size_t expected_size = 1;
     size_t real_size = vector_size(vector);
 
-    if(real_size != expected_size){
+    if (real_size != expected_size)
+    {
         printf("Error : expected %lu but was %lu \n", (unsigned long)expected_size, (unsigned long)real_size);
         isPassed = -1;
     }
 
     result = vector_get(vector, 0);
 
-    if(result != expected){
+    if (result != expected)
+    {
         printf("Error : expected %lf but was %lf \n", expected, result);
         isPassed = -1;
     }
@@ -444,10 +454,12 @@ int test_vector_clear()
  *
  * @return 1 if passed -1 otherwise
  */
-int test_vector_empty(){
+int test_vector_empty()
+{
     p_s_vector vector = vector_alloc(0);
-    
-    if(vector_empty(vector) != 1){
+
+    if (vector_empty(vector) != 1)
+    {
         return -1;
     }
 
@@ -460,12 +472,14 @@ int test_vector_empty(){
  *
  * @return 1 if passed -1 otherwise
  */
-int test_vector_size(){
+int test_vector_size()
+{
     p_s_vector vector = vector_alloc(0);
 
     int result = vector_size(vector);
     int expected_result = 0;
-    if(result != expected_result){
+    if (result != expected_result)
+    {
         printf("Error : expected %d but was %d \n", expected_result, result);
         return -1;
     }

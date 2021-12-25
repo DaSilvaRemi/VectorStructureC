@@ -2,7 +2,6 @@
 // Created by remid on 03/12/2021.
 //
 #include "my_struct.h"
-#include "random.h"
 
 p_s_my_struct my_struct_alloc(){
     //Allocate struct
@@ -17,6 +16,7 @@ p_s_my_struct my_struct_alloc(){
 
     my_struct->str = NULL;
     my_struct->nb = 0.0;
+    my_struct_randoms_init(my_struct);
 
     return my_struct;
 }
@@ -29,6 +29,7 @@ void my_struct_free(p_s_my_struct p_vector){
 
 void my_struct_randoms_init(p_s_my_struct p_vector){
     size_t size = random_size_t(1, 50);
+
     p_vector->str = (unsigned char*) malloc(sizeof(unsigned char) * size);
 
     //If struct is NULL then return NULL
@@ -43,8 +44,16 @@ void my_struct_randoms_init(p_s_my_struct p_vector){
 }
 
 void my_struct_copy(p_s_my_struct p_dest, p_s_my_struct p_src){
+    if(p_src == NULL || p_dest == NULL){
+        printf("p_dest && p_dest was NULL");
+    }
+
+    if(p_src->str == NULL){
+        printf("Error p_src->str was null !!!");
+    }
+
     p_dest->nb = p_src->nb;
-    p_dest->str = realloc(p_dest->str, sizeof(char*) * str_len(p_src->str));
+    p_dest->str = realloc(p_dest->str, sizeof(unsigned char*) * strlen((const char*) p_src->str));
 
     if(p_dest->str == NULL){
         printf("Error : str was nos allocate ! \n");
@@ -60,25 +69,20 @@ void my_struct_copy(p_s_my_struct p_dest, p_s_my_struct p_src){
     p_dest->str[i] = '\0';
 }
 
-int my_struct_cmp(p_s_my_struct p_vector_a, p_s_my_struct p_struct_b){
-    if(p_vector_a->nb > p_struct_b->nb){
+int my_struct_cmp(p_s_my_struct p_struct_a, p_s_my_struct p_struct_b){
+    if(p_struct_a == NULL || p_struct_b == NULL){
+        printf("p_struct_a && p_struct_b was NULL");
+    }else if(p_struct_a->str == NULL || p_struct_b->str == NULL){
+        printf("Error str was null !!!");
+    }
+
+
+    if(p_struct_a->nb > p_struct_b->nb){
         return 1;
-    }else if(p_vector_a->nb < p_struct_b->nb){
+    }else if(p_struct_a->nb < p_struct_b->nb){
         return -1;
     }else{
-        size_t p_vector_a_str_len = str_len(p_vector_a->str);
-        size_t p_struct_b_str_len = str_len(p_struct_b->str);
-
-        return p_vector_a_str_len > p_struct_b_str_len ? 1 : p_vector_a_str_len < p_struct_b_str_len ? -1 : 0;
+        int result = strcmp((char const *) p_struct_a->str, (char const *) p_struct_b->str);
+        return result > 0 ? 1 : result < 0 ? -1 : 0;
     }
-}
-
-size_t str_len(unsigned char* s){
-    size_t i = 0;
-
-    while(s[i] != '\0'){
-        ++i;
-    }
-
-    return i;
 }

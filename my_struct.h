@@ -8,6 +8,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include "random.h"
 
 struct struct_my_struct{
     unsigned char * str;
@@ -22,6 +24,5 @@ void my_struct_free(p_s_my_struct p_vector);
 void my_struct_randoms_init(p_s_my_struct p_vector);
 void my_struct_copy(p_s_my_struct p_dest, p_s_my_struct p_src);
 int my_struct_cmp(p_s_my_struct p_vector_a, p_s_my_struct p_vector_b);
-size_t str_len(unsigned char* s);
 
 #endif //_MY_STRUCT_H

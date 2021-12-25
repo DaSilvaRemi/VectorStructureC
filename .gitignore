@@ -1,4 +1,5 @@
 test_vector
+test_vector_double
 test_random
 test_my_struct
 bench_vector

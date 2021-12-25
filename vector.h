@@ -29,7 +29,7 @@ typedef s_vector* p_s_vector;
 p_s_vector vector_alloc(size_t n, t_data_alloc alloc_func, t_data_free free_func, t_data_cpy cpy_func);
 void vector_free(p_s_vector p_vector);
 void vector_free_tab(p_s_vector p_vector);
-void vector_get(p_s_vector p_vector, size_t i, void* p_data);
+int vector_get(p_s_vector p_vector, size_t i, void* p_data);
 void vector_set(p_s_vector p_vector, size_t i, void* v);
 void vector_insert(p_s_vector p_vector, size_t i, void* v);
 void vector_erase(p_s_vector p_vector, size_t i);
