@@ -12,7 +12,7 @@
  *
  * @return A pointer on struct vector or NULL if have error.
  *
- * @throws MallocException Display CMD message if we can't allocate memory
+ * @throw MallocException Display CMD message if we can't allocate memory
  */
 p_s_vector vector_alloc(size_t n)
 {
@@ -62,10 +62,10 @@ p_s_vector vector_alloc(size_t n)
  * @param i The index of the element à insérer
  * @param v Value to set at i index
  *
- * @throws ErrorLimit Display CMD message if user try to insert with i > size
- * @throws ErrorEmptyArray Display CMD message if the tab is empty
- * @throws MallocException Display CMD message if we can't allocate memory
- * @throws ReallocException Display CMD message if we can't reallocate memory
+ * @throw ErrorLimit Display CMD message if user try to insert with i > size
+ * @throw ErrorEmptyArray Display CMD message if the tab is empty
+ * @throw MallocException Display CMD message if we can't allocate memory
+ * @throw ReallocException Display CMD message if we can't reallocate memory
  */
 void vector_insert(p_s_vector p_vector, size_t i, double v)
 {
@@ -136,10 +136,10 @@ void vector_insert(p_s_vector p_vector, size_t i, double v)
  * @param p_vector A pointer on struct vector
  * @param i The index of the element to erase
  *
- * @throws ErrorLimit Display CMD message if user try to erase with i >= size
- * @throws ErrorEmptyArray Display CMD message if the tab is empty
- * @throws MallocException Display CMD message if we can't allocate memory
- * @throws ReallocException Display CMD message if we can't reallocate memory
+ * @throw ErrorLimit Display CMD message if user try to erase with i >= size
+ * @throw ErrorEmptyArray Display CMD message if the tab is empty
+ * @throw MallocException Display CMD message if we can't allocate memory
+ * @throw ReallocException Display CMD message if we can't reallocate memory
  */
 void vector_erase(p_s_vector p_vector, size_t i)
 {
@@ -251,7 +251,7 @@ void toString(p_s_vector p_vector)
  *
  * @return A pointer on struct vector or NULL if have error.
  *
- * @throws MallocException Display CMD message if we can't allocate memory
+ * @throw MallocException Display CMD message if we can't allocate memory
  */
 p_s_vector vector_alloc(size_t n)
 {
@@ -299,10 +299,10 @@ p_s_vector vector_alloc(size_t n)
  * @param i The index of the element à insérer
  * @param v Value to set at i index
  *
- * @throws ErrorLimit Display CMD message if user try to insert with i > size
- * @throws ErrorEmptyArray Display CMD message if the tab is empty
- * @throws MallocException Display CMD message if we can't allocate memory
- * @throws ReallocException Display CMD message if we can't reallocate memory
+ * @throw ErrorLimit Display CMD message if user try to insert with i > size
+ * @throw ErrorEmptyArray Display CMD message if the tab is empty
+ * @throw MallocException Display CMD message if we can't allocate memory
+ * @throw ReallocException Display CMD message if we can't reallocate memory
  */
 void vector_insert(p_s_vector p_vector, size_t i, double v)
 {
@@ -369,10 +369,10 @@ void vector_insert(p_s_vector p_vector, size_t i, double v)
  * @param p_vector A pointer on struct vector
  * @param i The index of the element to erase
  *
- * @throws ErrorLimit Display CMD message if user try to erase with i >= size
- * @throws ErrorEmptyArray Display CMD message if the tab is empty
- * @throws MallocException Display CMD message if we can't allocate memory
- * @throws ReallocException Display CMD message if we can't reallocate memory
+ * @throw ErrorLimit Display CMD message if user try to erase with i >= size
+ * @throw ErrorEmptyArray Display CMD message if the tab is empty
+ * @throw MallocException Display CMD message if we can't allocate memory
+ * @throw ReallocException Display CMD message if we can't reallocate memory
  */
 void vector_erase(p_s_vector p_vector, size_t i)
 {
@@ -468,7 +468,7 @@ void toString(p_s_vector p_vector)
  *
  * @return Value at the index i
  *
- * @throws ErrorLimit Display CMD message if user try to get with i >= size
+ * @throw ErrorLimit Display CMD message if user try to get with i >= size
  */
 double vector_get(p_s_vector p_vector, size_t i)
 {
@@ -489,7 +489,7 @@ double vector_get(p_s_vector p_vector, size_t i)
  * @param i The index of the element à modifier
  * @param v Value to set at index i
  *
- * @throws ErrorLimit Display CMD message if user try to modify with i >= size
+ * @throw ErrorLimit Display CMD message if user try to modify with i >= size
  */
 void vector_set(p_s_vector p_vector, size_t i, double v)
 {
@@ -556,7 +556,7 @@ void vector_pop_back(p_s_vector p_vector)
  *
  * @param p_vector A pointer on struct vector
  *
- * @throws MallocException Display CMD message if we can't allocate memory
+ * @throw MallocException Display CMD message if we can't allocate memory
  */
 void vector_clear(p_s_vector p_vector)
 {

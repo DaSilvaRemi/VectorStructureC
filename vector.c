@@ -10,7 +10,7 @@
  *
  * @return A pointer on struct vector or NULL if have error.
  *
- * @throws MallocException Display CMD message if we can't allocate memory
+ * @throw MallocException Display CMD message if we can't allocate memory
  */
 p_s_vector vector_alloc(size_t n, t_data_alloc alloc_func, t_data_free free_func, t_data_cpy cpy_func)
 {
@@ -26,7 +26,7 @@ p_s_vector vector_alloc(size_t n, t_data_alloc alloc_func, t_data_free free_func
 
     //Allocate Tab
     size_t capacity = n + 16;
-    vector->tab = (void **) malloc(sizeof(void*) * capacity);
+    vector->tab = (void **)malloc(sizeof(void *) * capacity);
 
     //If tab is NULL then return NULL
     if (vector->tab == NULL)
@@ -46,7 +46,6 @@ p_s_vector vector_alloc(size_t n, t_data_alloc alloc_func, t_data_free free_func
     for (size_t i = 0; i < vector->capacity; i++)
     {
         vector->tab[i] = (*vector->alloc_func)();
-
     }
 
     return vector;
@@ -59,8 +58,9 @@ p_s_vector vector_alloc(size_t n, t_data_alloc alloc_func, t_data_free free_func
  */
 void vector_free(p_s_vector p_vector)
 {
-    if(p_vector == NULL){
-        printf("Error you passing a pointer set to null");
+    if (p_vector == NULL)
+    {
+        printf("Error you passing a pointer set to null\n");
         return;
     }
     //Free tab, pointer and set it to NULL
@@ -69,13 +69,21 @@ void vector_free(p_s_vector p_vector)
     p_vector = NULL;
 }
 
-void vector_free_tab(p_s_vector p_vector){
-    if(p_vector == NULL || p_vector->tab == NULL){
-        printf("Error you passing a pointer of tab set to null");
+void vector_free_tab(p_s_vector p_vector)
+{
+    if (p_vector == NULL)
+    {
+        printf("Error you passing a p_vector set to null\n");
+        return;
+    }
+    else if (p_vector->tab == NULL)
+    {
+        printf("Error you passing a p_vector->tab set to null\n");
         return;
     }
 
-    for (size_t i = 0; i < p_vector->capacity; ++i) {
+    for (size_t i = 0; i < p_vector->capacity; ++i)
+    {
         (*p_vector->free_func)(p_vector->tab[i]);
     }
 
@@ -91,16 +99,18 @@ void vector_free_tab(p_s_vector p_vector){
  *
  * @return Value at the index i
  *
- * @throws ErrorLimit Display CMD message if user try to get with i >= size
+ * @throw ErrorLimit Display CMD message if user try to get with i >= size
  */
-int vector_get(p_s_vector p_vector, size_t i, void* p_data)
+int vector_get(p_s_vector p_vector, size_t i, void *p_data)
 {
     //Verify If user doesn't erase from the size of the tab.
     if (i >= vector_size(p_vector))
     {
         printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
         return -1;
-    }else if(p_data == NULL){
+    }
+    else if (p_data == NULL)
+    {
         printf("Error p_data it's a NULL value\n");
         return -1;
     }
@@ -116,9 +126,9 @@ int vector_get(p_s_vector p_vector, size_t i, void* p_data)
  * @param i The index of the element à modifier
  * @param v Value to set at index i
  *
- * @throws ErrorLimit Display CMD message if user try to modify with i >= size
+ * @throw ErrorLimit Display CMD message if user try to modify with i >= size
  */
-void vector_set(p_s_vector p_vector, size_t i, void* v)
+void vector_set(p_s_vector p_vector, size_t i, void *v)
 {
     //Verify If user doesn't erase from the size of the tab.
     if (i >= vector_size(p_vector))
@@ -127,7 +137,7 @@ void vector_set(p_s_vector p_vector, size_t i, void* v)
         return;
     }
 
-    (*p_vector->cpy_func)(v, p_vector->tab[i]);
+    (*p_vector->cpy_func)(p_vector->tab[i], v);
 }
 
 /**
@@ -142,12 +152,12 @@ void vector_set(p_s_vector p_vector, size_t i, void* v)
  * @param i The index of the element à insérer
  * @param v Value to set at i index
  *
- * @throws ErrorLimit Display CMD message if user try to insert with i > size
- * @throws ErrorEmptyArray Display CMD message if the tab is empty
- * @throws MallocException Display CMD message if we can't allocate memory
- * @throws ReallocException Display CMD message if we can't reallocate memory
+ * @throw ErrorLimit Display CMD message if user try to insert with i > size
+ * @throw ErrorEmptyArray Display CMD message if the tab is empty
+ * @throw MallocException Display CMD message if we can't allocate memory
+ * @throw ReallocException Display CMD message if we can't reallocate memory
  */
-void vector_insert(p_s_vector p_vector, size_t i, void* v)
+void vector_insert(p_s_vector p_vector, size_t i, void *v)
 {
     //Verify If user doesn't insert over the size of the tab.
     if (i > vector_size(p_vector))
@@ -163,13 +173,18 @@ void vector_insert(p_s_vector p_vector, size_t i, void* v)
     {
         p_vector->capacity *= 2;
         //We reallocate memory of the tab with new capacity
-        p_vector->tab = realloc(p_vector->tab, sizeof(void*) * p_vector->capacity);
+        p_vector->tab = realloc(p_vector->tab, sizeof(void *) * p_vector->capacity);
 
         //If p_vector->tab was NULL we display error
         if (p_vector->tab == NULL)
         {
-            printf("Error to realloc p_vector->tab !");
+            printf("Error to realloc p_vector->tab !\n");
             return;
+        }
+
+        for (size_t i = p_vector->size; i < p_vector->capacity; i++)
+        {
+            p_vector->tab[i] = (*p_vector->alloc_func)();
         }
     }
 
@@ -189,7 +204,7 @@ void vector_insert(p_s_vector p_vector, size_t i, void* v)
     //Get the elements in limit of [i; size[
     for (size_t j = 0; j < sizeEndArray; ++j)
     {
-        vector_get(p_vector, j + i, tmp_vector->tab[j]);
+        vector_set(tmp_vector, j, p_vector->tab[j + i]);
     }
 
     //Define new value at i index
@@ -201,7 +216,7 @@ void vector_insert(p_s_vector p_vector, size_t i, void* v)
         vector_set(p_vector, j + i + 1, tmp_vector->tab[j]);
     }
 
-    //Free tmpEndArray and set it to NULL
+    //Free tmp_vector and set it to NULL
     vector_free(tmp_vector);
 }
 
@@ -215,10 +230,10 @@ void vector_insert(p_s_vector p_vector, size_t i, void* v)
  * @param p_vector A pointer on struct vector
  * @param i The index of the element to erase
  *
- * @throws ErrorLimit Display CMD message if user try to erase with i >= size
- * @throws ErrorEmptyArray Display CMD message if the tab is empty
- * @throws MallocException Display CMD message if we can't allocate memory
- * @throws ReallocException Display CMD message if we can't reallocate memory
+ * @throw ErrorLimit Display CMD message if user try to erase with i >= size
+ * @throw ErrorEmptyArray Display CMD message if the tab is empty
+ * @throw MallocException Display CMD message if we can't allocate memory
+ * @throw ReallocException Display CMD message if we can't reallocate memory
  */
 void vector_erase(p_s_vector p_vector, size_t i)
 {
@@ -271,6 +286,11 @@ void vector_erase(p_s_vector p_vector, size_t i)
 
     if (vector_size(p_vector) <= vector_capacity(p_vector) / 4)
     {
+        for (size_t i = p_vector->size; i < p_vector->capacity; ++i)
+        {
+            (*p_vector->free_func)(p_vector->tab[i]);
+        }
+
         p_vector->capacity /= 4;
 
         //Reallocate the memory with a reduced size tab
@@ -279,7 +299,7 @@ void vector_erase(p_s_vector p_vector, size_t i)
         //If p_vector->tab was NULL we display error
         if (p_vector->tab == NULL)
         {
-            printf("Error to realloc p_vector->tab\n");
+            printf("Error to realloc p_vector->tab after erase\n");
             return;
         }
     }
@@ -298,7 +318,7 @@ void vector_erase(p_s_vector p_vector, size_t i)
  * @param p_vector A pointer on struct vector
  * @param v The value to insert
  */
-void vector_push_back(p_s_vector p_vector, void* v)
+void vector_push_back(p_s_vector p_vector, void *v)
 {
     vector_insert(p_vector, vector_size(p_vector), v);
 }
@@ -326,7 +346,8 @@ void vector_pop_back(p_s_vector p_vector)
  *
  * @return 1 if tab is empty else 0
  */
-int vector_empty(p_s_vector p_vector){
+int vector_empty(p_s_vector p_vector)
+{
     return vector_size(p_vector) == 0 ? 1 : 0;
 }
 
@@ -336,22 +357,28 @@ int vector_empty(p_s_vector p_vector){
  *
  * @param p_vector A pointer on struct vector
  *
- * @throws MallocException Display CMD message if we can't allocate memory
+ * @throw MallocException Display CMD message if we can't allocate memory
  */
 void vector_clear(p_s_vector p_vector)
 {
     vector_free_tab(p_vector);
 
-    p_vector->tab = malloc(sizeof(void *) * 16);
+    p_vector->size = 0;
+    p_vector->capacity = 16;
 
-    //If tab is empty we display error
+    p_vector->tab = (void **)malloc(sizeof(void *) * p_vector->capacity);
+
+
     if (p_vector->tab == NULL)
     {
         printf("Error to alloc p_vector->tab for cleaning\n");
         return;
     }
-    p_vector->size = 0;
-    p_vector->capacity = 16;
+
+    for (size_t i = 0; i < p_vector->capacity; i++)
+    {
+        p_vector->tab[i] = (*p_vector->alloc_func)();
+    }
 }
 
 /**
@@ -361,9 +388,9 @@ void vector_clear(p_s_vector p_vector)
  */
 void toString(p_s_vector p_vector)
 {
-    printf("p_vector{\n tab : [");
+    printf("p_vector{\n tab : [\n");
 
-    void* element = NULL;
+    void *element = NULL;
 
     size_t size = vector_size(p_vector);
     for (size_t i = 0; i < size; i++)
