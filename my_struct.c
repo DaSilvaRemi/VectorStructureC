@@ -28,7 +28,7 @@ void my_struct_free(p_s_my_struct p_vector){
 }
 
 void my_struct_randoms_init(p_s_my_struct p_vector){
-    size_t size = random_size_t(1, 50);
+    size_t size = random_size_t(10, 50);
 
     p_vector->str = (unsigned char*) malloc(sizeof(unsigned char) * size);
 
@@ -44,19 +44,22 @@ void my_struct_randoms_init(p_s_my_struct p_vector){
 }
 
 void my_struct_copy(p_s_my_struct p_dest, p_s_my_struct p_src){
-    if(p_src == NULL || p_dest == NULL){
-        printf("p_dest && p_dest was NULL");
-    }
-
-    if(p_src->str == NULL){
-        printf("Error p_src->str was null !!!");
+    if(p_src == NULL){
+        printf("p_src was NULL\n");
+        return;
+    }else if(p_dest == NULL){
+        printf("p_dest was NULL\n");
+        return;
+    }else if(p_src->str == NULL){
+        printf("Error p_src->str was null !\n");
+        return;
     }
 
     p_dest->nb = p_src->nb;
     p_dest->str = realloc(p_dest->str, sizeof(unsigned char*) * strlen((const char*) p_src->str));
 
     if(p_dest->str == NULL){
-        printf("Error : str was nos allocate ! \n");
+        printf("Error : str was not allocate ! \n");
         return;
     }
 

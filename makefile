@@ -9,8 +9,8 @@ test_vector_double : test_vector_double.o vector_double.o random.o
 test_random : test_random.o random.o
 	gcc random.o test_random.o -g -o test_random
 
-bench_vector : bench_vector.o vector.o random.o
-	gcc vector.o random.o bench_vector.o -g -o bench_vector
+bench_vector : bench_vector.o my_struct.o vector.o random.o
+	gcc vector.o my_struct.o random.o bench_vector.o -g -o bench_vector
 
 test_my_struct :  my_struct.o random.o test_my_struct.o
 	gcc my_struct.o random.o test_my_struct.o -g -o test_my_struct

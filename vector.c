@@ -268,7 +268,7 @@ void vector_erase(p_s_vector p_vector, size_t i)
     //Get elements in ]i; size[ limit
     for (size_t j = 0; j < sizeEndArray; ++j)
     {
-        vector_get(p_vector, j + iNext, tmp_vector->tab[j]);
+        vector_set(tmp_vector, j, p_vector->tab[j + iNext]);
     }
 
     //Set elements in [i; size[ limit, to erase the element at i
