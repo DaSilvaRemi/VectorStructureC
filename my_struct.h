@@ -11,13 +11,14 @@
 #include <string.h>
 #include "random.h"
 
-struct struct_my_struct{
-    unsigned char * str;
+struct struct_my_struct
+{
+    unsigned char *str;
     double nb;
 };
 
 typedef struct struct_my_struct s_my_struct;
-typedef s_my_struct* p_s_my_struct;
+typedef s_my_struct *p_s_my_struct;
 
 p_s_my_struct my_struct_alloc();
 void my_struct_free(p_s_my_struct p_vector);

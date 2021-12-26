@@ -16,7 +16,7 @@ int test_vector_alloc()
     size_t expected_size = 0;
     p_s_vector vector = vector_alloc(expected_size, (t_data_alloc)my_struct_alloc, (t_data_free)my_struct_free, (t_data_cpy)my_struct_copy);
 
-    //Test NULL values
+    // Test NULL values
     if (vector == NULL)
     {
         printf("Error : vector was nos allocate ! \n");
@@ -31,7 +31,7 @@ int test_vector_alloc()
 
     int is_passed = 1;
 
-    //Test size 0
+    // Test size 0
     size_t size = vector_size(vector);
     if (expected_size != size)
     {
@@ -39,7 +39,7 @@ int test_vector_alloc()
         is_passed = -1;
     }
 
-    //Test capacity 16
+    // Test capacity 16
     size_t expected_capacity = expected_size + 16;
     size_t capacity = vector_capacity(vector);
     if (expected_capacity != capacity)
@@ -52,7 +52,7 @@ int test_vector_alloc()
     vector_free(vector);
     vector = vector_alloc(expected_size, (t_data_alloc)my_struct_alloc, (t_data_free)my_struct_free, (t_data_cpy)my_struct_copy);
 
-    //Test NULL values
+    // Test NULL values
     if (vector == NULL)
     {
         printf("Error : vector was nos allocate ! \n");
@@ -66,7 +66,7 @@ int test_vector_alloc()
         return -1;
     }
 
-    //Test size 10
+    // Test size 10
     size = vector_size(vector);
     if (expected_size != size)
     {
@@ -103,7 +103,7 @@ int test_vector_get()
 
     result = vector_get(vector, 30, p_result);
 
-    //Test get over the size, display error
+    // Test get over the size, display error
     if (result != expected_result)
     {
         printf("Error : expected %lf but was %lf \n", expected_result, result);
@@ -112,7 +112,7 @@ int test_vector_get()
 
     expected_result = ((p_s_my_struct)p_result)->nb;
 
-    //Test get value
+    // Test get value
     vector_get(vector, 1, p_result);
 
     result = ((p_s_my_struct)p_result)->nb;
@@ -147,7 +147,7 @@ int test_vector_set()
     p_s_vector vector = vector_alloc(i, (t_data_alloc)my_struct_alloc, (t_data_free)my_struct_free, (t_data_cpy)my_struct_copy);
     int is_passed = 1;
 
-    //Test set value over tab, display error
+    // Test set value over tab, display error
     i += 26;
     vector_set(vector, i, p_result);
     result = vector_get(vector, i, p_result);
@@ -160,7 +160,7 @@ int test_vector_set()
 
     my_struct_free((p_s_my_struct)p_result);
 
-    //Test set random value
+    // Test set random value
     i = 2;
     p_result = (void *)my_struct_alloc();
     expected_result = ((p_s_my_struct)p_result)->nb;
@@ -207,7 +207,7 @@ int test_vector_insert()
     vector_insert(vector, i, p_result);
     real_size = vector_size(vector);
 
-    //Test insert in the middle of the tab
+    // Test insert in the middle of the tab
     if (real_size != expected_size)
     {
         printf("Error : expected size %lu but was %lu \n", (unsigned long)expected_size, (unsigned long)real_size);
@@ -233,7 +233,7 @@ int test_vector_insert()
     my_struct_free(p_result);
     p_result = (void *)my_struct_alloc();
 
-    //Test insert in the end of the tab
+    // Test insert in the end of the tab
     i = vector_size(vector);
     expected_result = ((p_s_my_struct)p_result)->nb;
     expected_size = i + 1;
@@ -255,7 +255,7 @@ int test_vector_insert()
         is_passed = -1;
     }
 
-    //Test insert over the size limit
+    // Test insert over the size limit
     i = vector_size(vector) * 2;
     expected_size = vector_size(vector) + 1;
     vector_insert(vector, i, p_result);
@@ -294,25 +294,25 @@ int test_vector_erase()
     size_t real_size = vector_size(vector);
     size_t expected_size = real_size - 1;
 
-    //Set a value in the middle of the tab
+    // Set a value in the middle of the tab
     vector_set(vector, i, p_result);
     --i;
-    //Set other value in middle - 1 of the tab
+    // Set other value in middle - 1 of the tab
     void *tmp_expected_result = (void *)my_struct_alloc();
     vector_set(vector, i, tmp_expected_result);
 
-    //Erase the middle - 1 value to verify if middle value didn't deleted
+    // Erase the middle - 1 value to verify if middle value didn't deleted
     vector_erase(vector, i);
     real_size = vector_size(vector);
 
-    //Check Size
+    // Check Size
     if (real_size != expected_size)
     {
         printf("Error : expected size %lu but was %lu \n", (unsigned long)expected_size, (unsigned long)real_size);
         is_passed = -1;
     }
 
-    //Check value
+    // Check value
     vector_get(vector, i, p_result);
 
     result = ((p_s_my_struct)p_result)->nb;
@@ -373,7 +373,7 @@ int test_vector_push_back()
     double expected_result = ((p_s_my_struct)p_result)->nb;
     size_t expected_size = vector_size(vector) + 1;
 
-    //Test add after last element
+    // Test add after last element
     vector_push_back(vector, p_result);
     if (vector->size != expected_size)
     {
@@ -383,7 +383,7 @@ int test_vector_push_back()
 
     --expected_size;
 
-    //Test values
+    // Test values
     vector_get(vector, expected_size, p_result);
     result = ((p_s_my_struct)p_result)->nb;
 
@@ -409,7 +409,7 @@ int test_vector_push_back()
  */
 int test_vector_pop_back()
 {
-    //Define default var
+    // Define default var
     p_s_vector vector = vector_alloc(10, (t_data_alloc)my_struct_alloc, (t_data_free)my_struct_free, (t_data_cpy)my_struct_copy);
     size_t size = vector_size(vector);
     size_t i = size - 1;
@@ -419,21 +419,21 @@ int test_vector_pop_back()
     double result = 0;
     double expected_result = ((p_s_my_struct)p_result)->nb;
 
-    //Test erase last element
+    // Test erase last element
     void *tmp_expected_result = (void *)my_struct_alloc();
     vector_set(vector, i, tmp_expected_result);
     vector_set(vector, --i, p_result);
     vector_pop_back(vector);
     size = vector_size(vector);
 
-    //Test size
+    // Test size
     if (size != expected_size)
     {
         printf("Error : expected size %lu but was %lu \n", (unsigned long)expected_size, (unsigned long)size);
         is_passed = -1;
     }
 
-    //Test value in the limit
+    // Test value in the limit
     vector_get(vector, i, p_result);
     result = ((p_s_my_struct)p_result)->nb;
     if (result != expected_result)
@@ -459,7 +459,7 @@ int test_vector_pop_back()
 int test_vector_clear()
 {
     p_s_vector vector = vector_alloc(10, (t_data_alloc)my_struct_alloc, (t_data_free)my_struct_free, (t_data_cpy)my_struct_copy);
-        
+
     size_t real_size = vector_size(vector);
     size_t expected_size = 0;
     void *p_result = (void *)my_struct_alloc();
@@ -481,7 +481,7 @@ int test_vector_clear()
         is_passed = -1;
     }
 
-    //Test INSERT and GET after CLEAR
+    // Test INSERT and GET after CLEAR
     my_struct_free((p_s_my_struct)p_result);
 
     for (size_t i = 0; i < real_size; i++)
@@ -571,7 +571,7 @@ int test_vector_capacity()
 
     if (result != expected_result)
     {
-        printf("Error : expected capacity %lu but was %lu \n", (unsigned long) expected_result, (unsigned long) result);
+        printf("Error : expected capacity %lu but was %lu \n", (unsigned long)expected_result, (unsigned long)result);
         is_passed = -1;
     }
 
@@ -586,7 +586,7 @@ int test_vector_capacity()
     expected_result = 32;
     if (result != expected_result)
     {
-        printf("Error : expected capacity %lu but was %lu \n", (unsigned long) expected_result, (unsigned long) result);
+        printf("Error : expected capacity %lu but was %lu \n", (unsigned long)expected_result, (unsigned long)result);
         is_passed = -1;
     }
 
@@ -601,7 +601,7 @@ int test_vector_capacity()
     expected_result = 8;
     if (result != expected_result)
     {
-        printf("Error : expected capacity %lu but was %lu \n", (unsigned long) expected_result, (unsigned long) result);
+        printf("Error : expected capacity %lu but was %lu \n", (unsigned long)expected_result, (unsigned long)result);
         is_passed = -1;
     }
 
@@ -610,6 +610,13 @@ int test_vector_capacity()
     return is_passed;
 }
 
+/**
+ * @brief The main program
+ *
+ * @param argc Number of argument
+ * @param argv The arguments
+ * @return int The error
+ */
 int main(int argc, char *argv[])
 {
     printf("%s \n", test_vector_alloc() == 1 ? "Test Allocate passed" : "Test Allocate Failed");

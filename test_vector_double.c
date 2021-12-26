@@ -14,7 +14,7 @@ int test_vector_alloc()
     size_t expected_size = 0;
     p_s_vector vector = vector_alloc(expected_size);
 
-    //Test NULL values
+    // Test NULL values
     if (vector == NULL)
     {
         printf("Error : vector was nos allocate ! \n");
@@ -29,7 +29,7 @@ int test_vector_alloc()
 
     int isPassed = 1;
 
-    //Test size 0
+    // Test size 0
     size_t size = vector_size(vector);
     if (expected_size != size)
     {
@@ -41,7 +41,7 @@ int test_vector_alloc()
     vector_free(vector);
     vector = vector_alloc(expected_size);
 
-    //Test NULL values
+    // Test NULL values
     if (vector == NULL)
     {
         printf("Error : vector was nos allocate ! \n");
@@ -54,7 +54,7 @@ int test_vector_alloc()
         return -1;
     }
 
-    //Test size 10
+    // Test size 10
     size = vector_size(vector);
     if (expected_size != size)
     {
@@ -80,20 +80,20 @@ int test_vector_get()
 
     double result = vector_get(vector, 10);
 
-    //Test get voer the size, display error
+    // Test get voer the size, display error
     if (result != -1)
     {
         isPassed = 0;
     }
 
-    //Test get size
+    // Test get size
     result = vector_get(vector, 1);
     if (result != 0.0)
     {
         isPassed = 0;
     }
 
-    //Test get value
+    // Test get value
     result = vector_get(vector, 9);
     if (result != 0.0)
     {
@@ -119,7 +119,7 @@ int test_vector_set()
     p_s_vector vector = vector_alloc(i);
     double isPassed = 1;
 
-    //Test set 10.0 over tab, display error
+    // Test set 10.0 over tab, display error
     vector_set(vector, i, expected_result);
     double result = vector_get(vector, i);
     expected_result = -1;
@@ -130,7 +130,7 @@ int test_vector_set()
         isPassed = -1;
     }
 
-    //Test set to 4.5
+    // Test set to 4.5
     expected_result = 4.5;
     i = 2;
     vector_set(vector, i, expected_result);
@@ -142,7 +142,7 @@ int test_vector_set()
         isPassed = -1;
     }
 
-    //Test set to 7.5
+    // Test set to 7.5
     expected_result = 7.5;
     i = 9;
     vector_set(vector, i, expected_result);
@@ -179,7 +179,7 @@ int test_vector_insert()
     vector_insert(vector, i, j);
     size_t real_size = vector_size(vector);
 
-    //Test insert in the middle of the tab
+    // Test insert in the middle of the tab
     if (real_size != expected_size)
     {
         printf("Error : expected size %lu but was %lu \n", (unsigned long)expected_size, (unsigned long)real_size);
@@ -200,7 +200,7 @@ int test_vector_insert()
         isPassed = -1;
     }
 
-    //Test insert in the end of the tab
+    // Test insert in the end of the tab
     i = vector_size(vector);
     j = 10.0;
     expected_size = i + 1;
@@ -220,7 +220,7 @@ int test_vector_insert()
         isPassed = -1;
     }
 
-    //Test insert over the size limit
+    // Test insert over the size limit
     i = vector_size(vector) * 2;
     expected_size = vector_size(vector) + 1;
     vector_insert(vector, i, j);
@@ -247,7 +247,7 @@ int test_vector_erase()
     p_s_vector vector = vector_alloc(10);
     double result = 0.0;
 
-    //Test erase in the middle of the tab
+    // Test erase in the middle of the tab
     size_t i = 6;
     double j = 4.0;
     size_t real_size = vector_size(vector);
@@ -272,7 +272,7 @@ int test_vector_erase()
         isPassed = -1;
     }
 
-    //Test erase in the start of the tab
+    // Test erase in the start of the tab
     i = 0;
     j = 10.0;
     expected_size = vector_size(vector) - 1;
@@ -313,7 +313,7 @@ int test_vector_push_back()
     double j = 5.0;
     size_t expected_size = vector_size(vector) + 1;
 
-    //Test add after last element
+    // Test add after last element
     vector_push_back(vector, j);
     if (vector->size != expected_size)
     {
@@ -323,7 +323,7 @@ int test_vector_push_back()
 
     --expected_size;
 
-    //Test values
+    // Test values
     result = vector_get(vector, expected_size);
     if (result != j)
     {
@@ -352,20 +352,20 @@ int test_vector_pop_back()
     double result = 0.0;
     int isPassed = 1;
 
-    //Test erase last element
+    // Test erase last element
     vector_set(vector, i, j);
     vector_set(vector, --i, j);
     vector_pop_back(vector);
     size = vector_size(vector);
 
-    //Test size
+    // Test size
     if (size != expected_size)
     {
         printf("Error : expected size %lu but was %lu \n", (unsigned long)expected_size, (unsigned long)size);
         isPassed = -1;
     }
 
-    //Test value other the limit to test size change
+    // Test value other the limit to test size change
     result = vector_get(vector, i + 1);
     if (result != -1)
     {
@@ -373,7 +373,7 @@ int test_vector_pop_back()
         isPassed = -1;
     }
 
-    //Test value in the limit
+    // Test value in the limit
     result = vector_get(vector, i);
     if (result != j)
     {
@@ -412,7 +412,7 @@ int test_vector_clear()
         isPassed = -1;
     }
 
-    //Test to add after clear
+    // Test to add after clear
     double result = 0.0;
     double expected = result;
     for (size_t i = 0; i < size; i++)
@@ -425,7 +425,7 @@ int test_vector_clear()
         }
     }
 
-    //Test get value after clear and insert
+    // Test get value after clear and insert
     expected = 10.0;
     vector_push_back(vector, expected);
     size_t expected_size = 1;
@@ -488,6 +488,13 @@ int test_vector_size()
     return 1;
 }
 
+/**
+ * @brief The main program
+ *
+ * @param argc Number of argument
+ * @param argv The arguments
+ * @return int The error
+ */
 int main(int argc, char *argv[])
 {
     printf("%s \n", test_vector_alloc() == 1 ? "Test Allocate passed" : "Test Allocate Failed");

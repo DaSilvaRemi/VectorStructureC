@@ -15,10 +15,10 @@ struct struct_vector
     double *tab;
     size_t size;
     size_t capacity;
-} ;
+};
 
 typedef struct struct_vector s_vector;
-typedef s_vector* p_s_vector;
+typedef s_vector *p_s_vector;
 
 p_s_vector vector_alloc(size_t n);
 void vector_insert(p_s_vector p_vector, size_t i, double v);
@@ -32,10 +32,10 @@ struct struct_vector
 {
     double *tab;
     size_t size;
-} ;
+};
 
 typedef struct struct_vector s_vector;
-typedef s_vector* p_s_vector;
+typedef s_vector *p_s_vector;
 
 p_s_vector vector_alloc(size_t n);
 void vector_insert(p_s_vector p_vector, size_t i, double v);

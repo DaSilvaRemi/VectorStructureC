@@ -14,21 +14,21 @@
  */
 p_s_vector vector_alloc(size_t n, t_data_alloc alloc_func, t_data_free free_func, t_data_cpy cpy_func)
 {
-    //Allocate vector
+    // Allocate vector
     p_s_vector vector = (p_s_vector)malloc(sizeof(s_vector));
 
-    //If vector is NULL then return NULL
+    // If vector is NULL then return NULL
     if (vector == NULL)
     {
         printf("Error to allocating memory\n");
         return NULL;
     }
 
-    //Allocate Tab
+    // Allocate Tab
     size_t capacity = n + 16;
     vector->tab = (void **)malloc(sizeof(void *) * capacity);
 
-    //If tab is NULL then return NULL
+    // If tab is NULL then return NULL
     if (vector->tab == NULL)
     {
         printf("Error to allocating memory\n");
@@ -36,13 +36,14 @@ p_s_vector vector_alloc(size_t n, t_data_alloc alloc_func, t_data_free free_func
         return NULL;
     }
 
+    // Define STRUCT values
     vector->size = n;
     vector->capacity = capacity;
     vector->alloc_func = alloc_func;
     vector->free_func = free_func;
     vector->cpy_func = cpy_func;
 
-    //Define n NULL
+    // Define n NULL
     for (size_t i = 0; i < vector->capacity; i++)
     {
         vector->tab[i] = (*vector->alloc_func)();
@@ -63,12 +64,17 @@ void vector_free(p_s_vector p_vector)
         printf("Error you passing a pointer set to null\n");
         return;
     }
-    //Free tab, pointer and set it to NULL
+    // Free tab, pointer and set it to NULL
     vector_free_tab(p_vector);
     free(p_vector);
     p_vector = NULL;
 }
 
+/**
+ * @brief Free the tab
+ *
+ * @param p_vector A pointer on struct vector
+ */
 void vector_free_tab(p_s_vector p_vector)
 {
     if (p_vector == NULL)
@@ -92,7 +98,7 @@ void vector_free_tab(p_s_vector p_vector)
 }
 
 /**
- * Get element à la position i
+ * Get element at position i
  *
  * @param p_vector A pointer on struct vector
  * @param i The index of the element à récupérer
@@ -103,7 +109,7 @@ void vector_free_tab(p_s_vector p_vector)
  */
 int vector_get(p_s_vector p_vector, size_t i, void *p_data)
 {
-    //Verify If user doesn't erase from the size of the tab.
+    // Verify If user doesn't erase from the size of the tab.
     if (i >= vector_size(p_vector))
     {
         printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
@@ -130,7 +136,7 @@ int vector_get(p_s_vector p_vector, size_t i, void *p_data)
  */
 void vector_set(p_s_vector p_vector, size_t i, void *v)
 {
-    //Verify If user doesn't erase from the size of the tab.
+    // Verify If user doesn't erase from the size of the tab.
     if (i >= vector_size(p_vector))
     {
         printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
@@ -159,23 +165,23 @@ void vector_set(p_s_vector p_vector, size_t i, void *v)
  */
 void vector_insert(p_s_vector p_vector, size_t i, void *v)
 {
-    //Verify If user doesn't insert over the size of the tab.
+    // Verify If user doesn't insert over the size of the tab.
     if (i > vector_size(p_vector))
     {
         printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
         return;
     }
 
-    //We extend the size to add element
+    // We extend the size to add element
     ++p_vector->size;
 
     if (vector_size(p_vector) >= vector_capacity(p_vector))
     {
         p_vector->capacity *= 2;
-        //We reallocate memory of the tab with new capacity
+        // We reallocate memory of the tab with new capacity
         p_vector->tab = realloc(p_vector->tab, sizeof(void *) * p_vector->capacity);
 
-        //If p_vector->tab was NULL we display error
+        // If p_vector->tab was NULL we display error
         if (p_vector->tab == NULL)
         {
             printf("Error to realloc p_vector->tab !\n");
@@ -188,35 +194,35 @@ void vector_insert(p_s_vector p_vector, size_t i, void *v)
         }
     }
 
-    //We define a limit [i; size[
+    // We define a limit [i; size[
     size_t sizeEndArray = vector_size(p_vector) - i;
 
-    //We allocate a temp vector to get the end of the tab
+    // We allocate a temp vector to get the end of the tab
     p_s_vector tmp_vector = vector_alloc(sizeEndArray, p_vector->alloc_func, p_vector->free_func, p_vector->cpy_func);
 
-    //If tmpEndArray was NULL we display error
+    // If tmpEndArray was NULL we display error
     if (tmp_vector == NULL)
     {
         printf("Error to allocating tmp_vector\n");
         return;
     }
 
-    //Get the elements in limit of [i; size[
+    // Get the elements in limit of [i; size[
     for (size_t j = 0; j < sizeEndArray; ++j)
     {
         vector_set(tmp_vector, j, p_vector->tab[j + i]);
     }
 
-    //Define new value at i index
+    // Define new value at i index
     vector_set(p_vector, i, v);
 
-    //Insert elements in ]i; size[ limit
+    // Insert elements in ]i; size[ limit
     for (size_t j = 0; j < sizeEndArray - 1; ++j)
     {
         vector_set(p_vector, j + i + 1, tmp_vector->tab[j]);
     }
 
-    //Free tmp_vector and set it to NULL
+    // Free tmp_vector and set it to NULL
     vector_free(tmp_vector);
 }
 
@@ -237,51 +243,51 @@ void vector_insert(p_s_vector p_vector, size_t i, void *v)
  */
 void vector_erase(p_s_vector p_vector, size_t i)
 {
-    //Verify If user doesn't erase from the size of the tab.
+    // Verify If user doesn't erase from the size of the tab.
     if (i >= vector_size(p_vector))
     {
         printf("Error limit of the array is [%d; %lu[\n", 0, (unsigned long)vector_size(p_vector));
         return;
     }
 
-    //If tab is empty we display error
+    // If tab is empty we display error
     if (vector_empty(p_vector) == 1)
     {
         printf("Error the array it's empty !\n");
         return;
     }
 
-    //We define ]i; size[ limit
+    // We define ]i; size[ limit
     size_t iNext = i + 1;
     size_t sizeEndArray = vector_size(p_vector) - iNext;
 
-    //Allocate temp tab
+    // Allocate temp tab
     p_s_vector tmp_vector = vector_alloc(sizeEndArray, p_vector->alloc_func, p_vector->free_func, p_vector->cpy_func);
 
-    //If tmp_vector was NULL we display error
+    // If tmp_vector was NULL we display error
     if (tmp_vector == NULL)
     {
         printf("Error to allocating memory\n");
         return;
     }
 
-    //Get elements in ]i; size[ limit
+    // Get elements in ]i; size[ limit
     for (size_t j = 0; j < sizeEndArray; ++j)
     {
         vector_set(tmp_vector, j, p_vector->tab[j + iNext]);
     }
 
-    //Set elements in [i; size[ limit, to erase the element at i
+    // Set elements in [i; size[ limit, to erase the element at i
     for (size_t j = 0; j < sizeEndArray; ++j)
     {
-        //We use j at offset, because tmp_vector and p_vector->tab doesn't have the same size
+        // We use j at offset, because tmp_vector and p_vector->tab doesn't have the same size
         vector_set(p_vector, j + i, tmp_vector->tab[j]);
     }
 
-    //Free tmp_vector and set it to NULL
+    // Free tmp_vector and set it to NULL
     vector_free(tmp_vector);
 
-    //Reduce the size
+    // Reduce the size
     --p_vector->size;
 
     if (vector_size(p_vector) <= vector_capacity(p_vector) / 4)
@@ -293,10 +299,10 @@ void vector_erase(p_s_vector p_vector, size_t i)
 
         p_vector->capacity /= 4;
 
-        //Reallocate the memory with a reduced size tab
+        // Reallocate the memory with a reduced size tab
         p_vector->tab = realloc(p_vector->tab, sizeof(double) * p_vector->capacity);
 
-        //If p_vector->tab was NULL we display error
+        // If p_vector->tab was NULL we display error
         if (p_vector->tab == NULL)
         {
             printf("Error to realloc p_vector->tab after erase\n");
@@ -335,7 +341,7 @@ void vector_push_back(p_s_vector p_vector, void *v)
  */
 void vector_pop_back(p_s_vector p_vector)
 {
-    //Last element index was defined by size - 1;
+    // Last element index was defined by size - 1;
     vector_erase(p_vector, vector_size(p_vector) - 1);
 }
 
@@ -367,7 +373,6 @@ void vector_clear(p_s_vector p_vector)
     p_vector->capacity = 16;
 
     p_vector->tab = (void **)malloc(sizeof(void *) * p_vector->capacity);
-
 
     if (p_vector->tab == NULL)
     {
