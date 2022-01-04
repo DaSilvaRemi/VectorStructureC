@@ -9,40 +9,26 @@
 #include <stdio.h>
 #include <stddef.h>
 
+
+struct struct_vector
+{
+    double *tab;
+    size_t size;
 #ifdef V2
-struct struct_vector
-{
-    double *tab;
-    size_t size;
     size_t capacity;
-};
-
-typedef struct struct_vector s_vector;
-typedef s_vector *p_s_vector;
-
-p_s_vector vector_alloc(size_t n);
-void vector_insert(p_s_vector p_vector, size_t i, double v);
-void vector_erase(p_s_vector p_vector, size_t i);
-size_t vector_capacity(p_s_vector p_vector);
-void toString(p_s_vector p_vector);
-
-#else
-
-struct struct_vector
-{
-    double *tab;
-    size_t size;
-};
-
-typedef struct struct_vector s_vector;
-typedef s_vector *p_s_vector;
-
-p_s_vector vector_alloc(size_t n);
-void vector_insert(p_s_vector p_vector, size_t i, double v);
-void vector_erase(p_s_vector p_vector, size_t i);
-void toString(p_s_vector p_vector);
-
 #endif
+};
+
+typedef struct struct_vector s_vector;
+typedef s_vector *p_s_vector;
+
+p_s_vector vector_alloc(size_t n);
+void vector_insert(p_s_vector p_vector, size_t i, double v);
+void vector_erase(p_s_vector p_vector, size_t i);
+#ifdef V2
+size_t vector_capacity(p_s_vector p_vector);
+#endif
+void toString(p_s_vector p_vector);
 
 double vector_get(p_s_vector p_vector, size_t i);
 void vector_set(p_s_vector p_vector, size_t i, double v);
