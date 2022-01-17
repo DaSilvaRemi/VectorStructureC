@@ -575,7 +575,7 @@ int test_vector_capacity()
         is_passed = -1;
     }
 
-    /* TEST INCREASE CAPACITY WITH INSERT */
+    // TEST INCREASE CAPACITY WITH INSERT
 
     for (int i = 0; i < 17; ++i)
     {
@@ -590,7 +590,7 @@ int test_vector_capacity()
         is_passed = -1;
     }
 
-    /* TEST LOWER CAPACITY WITH ERASE */
+    // TEST LOWER CAPACITY WITH ERASE
 
     for (int i = 0; i < 9; ++i)
     {
@@ -629,7 +629,7 @@ int main(int argc, char *argv[])
 
     printf("%s \n", test_vector_erase() == 1 ? "Test Erase passed" : "Test Erase Failed");
 
-    printf("%s \n", test_vector_push_back() == 1 ? "Test Push Back passed" : "Test Push Back Failed");
+   printf("%s \n", test_vector_push_back() == 1 ? "Test Push Back passed" : "Test Push Back Failed");
 
     printf("%s \n", test_vector_pop_back() == 1 ? "Test Pop Back passed" : "Test Pop Back Failed");
 

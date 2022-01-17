@@ -48,7 +48,7 @@ void my_struct_randoms_init(p_s_my_struct p_my_struct)
 {
     size_t size = random_size_t(10, 50);
 
-    p_my_struct->str = (unsigned char *)malloc(sizeof(unsigned char) * size);
+    p_my_struct->str = (unsigned char *) malloc(sizeof(unsigned char) * size);
 
     // If struct is NULL then return NULL
     if (p_my_struct->str == NULL)
@@ -86,7 +86,13 @@ void my_struct_copy(p_s_my_struct p_dest, p_s_my_struct p_src)
     }
 
     p_dest->nb = p_src->nb;
-    p_dest->str = realloc(p_dest->str, sizeof(unsigned char *) * strlen((const char *)p_src->str));
+    size_t lenSrcStr = strlen((const char *) p_src->str);
+
+    if(p_dest->str != NULL){
+        free(p_dest->str);
+    }
+
+    p_dest->str = (unsigned char *) malloc(sizeof(unsigned char) * lenSrcStr + 1);
 
     if (p_dest->str == NULL)
     {
@@ -94,15 +100,12 @@ void my_struct_copy(p_s_my_struct p_dest, p_s_my_struct p_src)
         return;
     }
 
-    size_t i = 0;
-    while (p_src->str[i] != '\0')
-    {
+    ;
+    for(size_t i = 0; i < lenSrcStr; i++){
         p_dest->str[i] = p_src->str[i];
-        ;
-        ++i;
     }
 
-    p_dest->str[i] = '\0';
+    p_dest->str[lenSrcStr] = '\0';
 }
 
 /**

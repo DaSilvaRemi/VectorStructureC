@@ -69,7 +69,6 @@ int test_my_struct_copy(p_s_my_struct my_struct)
         printf("Error : str was nos allocate ! \n");
         is_passed = -1;
     }
-
     // Check the size of both structure
     size_t realSize = strlen((const char *)p_dest->str);
     size_t expectedSize = strlen((const char *)my_struct->str);
