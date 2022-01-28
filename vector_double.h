@@ -14,7 +14,7 @@ struct struct_vector
 {
     double *tab;
     size_t size;
-#ifdef V2
+#ifdef VERSION_2
     size_t capacity;
 #endif
 };
@@ -25,7 +25,7 @@ typedef s_vector *p_s_vector;
 p_s_vector vector_alloc(size_t n);
 void vector_insert(p_s_vector p_vector, size_t i, double v);
 void vector_erase(p_s_vector p_vector, size_t i);
-#ifdef V2
+#ifdef VERSION_2
 size_t vector_capacity(p_s_vector p_vector);
 #endif
 void toString(p_s_vector p_vector);

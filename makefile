@@ -19,7 +19,7 @@ vector.o : vector.c vector.h
 	gcc -Wall -Wextra -g -c vector.c
 
 vector_double.o : vector_double.c  vector_double.h
-	gcc -Wall -Wextra -D V2 -g -c vector_double.c
+	gcc -Wall -Wextra -D VERSION_2 -g -c vector_double.c
 
 random.o : random.c random.h
 	gcc -Wall -Wextra -g -c random.c

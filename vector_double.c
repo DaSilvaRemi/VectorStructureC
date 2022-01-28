@@ -25,7 +25,7 @@ p_s_vector vector_alloc(size_t n)
     }
 
     // Allocate Tab
-#ifdef V2
+#ifdef VERSION_2
     size_t capacity = n + 16;
     vector->tab = (double *)malloc(sizeof(double) * capacity);
 #else
@@ -42,7 +42,7 @@ p_s_vector vector_alloc(size_t n)
 
     vector->size = n;
 
-#ifdef V2
+#ifdef VERSION_2
     vector->capacity = capacity;
 #endif
 
@@ -84,7 +84,7 @@ void vector_insert(p_s_vector p_vector, size_t i, double v)
     // We extend the size to add element
     ++p_vector->size;
 
-#ifdef V2
+#ifdef VERSION_2
     if (vector_size(p_vector) >= vector_capacity(p_vector))
     {
         p_vector->capacity *= 2;
@@ -199,7 +199,7 @@ void vector_erase(p_s_vector p_vector, size_t i)
     // Reduce the size
     --p_vector->size;
 
-#ifdef V2
+#ifdef VERSION_2
     if (vector_size(p_vector) <= vector_capacity(p_vector) / 4)
     {
         p_vector->capacity /= 4;
@@ -208,7 +208,7 @@ void vector_erase(p_s_vector p_vector, size_t i)
         p_vector->tab = realloc(p_vector->tab, sizeof(double) * p_vector->capacity);
     }
 #else
-     p_vector->tab = realloc(p_vector->tab, sizeof(double) * vector_sizep_vector->size));
+     p_vector->tab = realloc(p_vector->tab, sizeof(double) * p_vector->size);
 #endif
 
     // If p_vector->tab was NULL we display error
@@ -219,7 +219,7 @@ void vector_erase(p_s_vector p_vector, size_t i)
     }
 }
 
-#ifdef V2
+#ifdef VERSION_2
 /**
  * Get the capacity of the vector
  *
@@ -253,7 +253,7 @@ void toString(p_s_vector p_vector)
     }
     printf("]\n");
     printf("size : %lu\n", (unsigned long)size);
-#ifdef V2
+#ifdef VERSION_2
     printf("capacity : %lu\n", (unsigned long)vector_capacity(p_vector));
 #endif
     printf("};\n");
