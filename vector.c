@@ -195,7 +195,7 @@ void vector_insert(p_s_vector p_vector, size_t i, void *v)
     }
 
     // We define a limit [i; size[
-    size_t sizeEndArray = vector_size(p_vector) - i;
+    size_t size_end_array = vector_size(p_vector) - i;
 
     // We allocate a temp vector to get the end of the tab
     p_s_vector tmp_vector = vector_alloc(sizeEndArray, p_vector->alloc_func, p_vector->free_func, p_vector->cpy_func);
@@ -208,7 +208,7 @@ void vector_insert(p_s_vector p_vector, size_t i, void *v)
     }
 
     // Get the elements in limit of [i; size[
-    for (size_t j = 0; j < sizeEndArray; ++j)
+    for (size_t j = 0; j < size_end_array; ++j)
     {
         vector_set(tmp_vector, j, p_vector->tab[j + i]);
     }
@@ -217,7 +217,7 @@ void vector_insert(p_s_vector p_vector, size_t i, void *v)
     vector_set(p_vector, i, v);
 
     // Insert elements in ]i; size[ limit
-    for (size_t j = 0; j < sizeEndArray - 1; ++j)
+    for (size_t j = 0; j < size_end_array - 1; ++j)
     {
         vector_set(p_vector, j + i + 1, tmp_vector->tab[j]);
     }
@@ -258,8 +258,8 @@ void vector_erase(p_s_vector p_vector, size_t i)
     }
 
     // We define ]i; size[ limit
-    size_t iNext = i + 1;
-    size_t sizeEndArray = vector_size(p_vector) - iNext;
+    size_t i_next = i + 1;
+    size_t size_end_array = vector_size(p_vector) - i_next;
 
     // Allocate temp tab
     p_s_vector tmp_vector = vector_alloc(sizeEndArray, p_vector->alloc_func, p_vector->free_func, p_vector->cpy_func);
@@ -272,13 +272,13 @@ void vector_erase(p_s_vector p_vector, size_t i)
     }
 
     // Get elements in ]i; size[ limit
-    for (size_t j = 0; j < sizeEndArray; ++j)
+    for (size_t j = 0; j < size_end_array; ++j)
     {
-        vector_set(tmp_vector, j, p_vector->tab[j + iNext]);
+        vector_set(tmp_vector, j, p_vector->tab[j + i_next]);
     }
 
     // Set elements in [i; size[ limit, to erase the element at i
-    for (size_t j = 0; j < sizeEndArray; ++j)
+    for (size_t j = 0; j < size_end_array; ++j)
     {
         // We use j at offset, because tmp_vector and p_vector->tab doesn't have the same size
         vector_set(p_vector, j + i, tmp_vector->tab[j]);
